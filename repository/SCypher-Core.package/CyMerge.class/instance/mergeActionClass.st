@@ -1,0 +1,3 @@
+factory
+mergeActionClass
+	^CyMergeAction 

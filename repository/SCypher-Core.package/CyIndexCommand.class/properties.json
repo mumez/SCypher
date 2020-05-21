@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "CyCommand",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "CyIndexCommand",
+	"type" : "normal"
+}

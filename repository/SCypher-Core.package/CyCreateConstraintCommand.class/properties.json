@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "CyConstraintCommand",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "CyCreateConstraintCommand",
+	"type" : "normal"
+}

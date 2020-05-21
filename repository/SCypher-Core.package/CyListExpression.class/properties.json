@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "CyAtomExpression",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"funcName",
+		"filter"
+	],
+	"name" : "CyListExpression",
+	"type" : "normal"
+}

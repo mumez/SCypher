@@ -1,0 +1,25 @@
+{
+	"instance" : {
+		"yieldPhrase:" : "MasashiUmezawa 6/18/2017 00:05",
+		"tokensYieldOn:" : "MasashiUmezawa 6/18/2017 00:05",
+		"yield:" : "MasashiUmezawa 6/18/2017 01:03",
+		"procInvocation:" : "MasashiUmezawa 6/17/2017 17:25",
+		"yieldPhrase" : "MasashiUmezawa 6/18/2017 00:05",
+		"tokensOn:" : "MasashiUmezawa 6/17/2017 17:26",
+		"procInvocation" : "MasashiUmezawa 6/17/2017 17:25"
+	},
+	"class" : {
+		"dbmsFunctions" : "MasashiUmezawa 6/18/2017 01:32",
+		"implicitOf:" : "MasashiUmezawa 6/18/2017 01:23",
+		"dbIndexes" : "MasashiUmezawa 6/18/2017 01:31",
+		"dbConstraints" : "MasashiUmezawa 6/18/2017 01:31",
+		"dbmsListConfig" : "MasashiUmezawa 6/18/2017 01:32",
+		"dbmsProcedures" : "MasashiUmezawa 6/18/2017 01:28",
+		"of:" : "MasashiUmezawa 6/18/2017 01:29",
+		"of:arguments:" : "MasashiUmezawa 6/18/2017 00:59",
+		"dbRelationshipTypes" : "MasashiUmezawa 6/18/2017 01:31",
+		"dbPropertyKeys" : "MasashiUmezawa 6/18/2017 01:31",
+		"dbmsComponents" : "MasashiUmezawa 6/18/2017 01:33",
+		"dbLabels" : "MasashiUmezawa 6/18/2017 01:30"
+	}
+}

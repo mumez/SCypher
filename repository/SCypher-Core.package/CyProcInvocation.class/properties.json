@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "",
+	"super" : "CyAtomExpression",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"isImplicit",
+		"procName",
+		"expressions"
+	],
+	"name" : "CyProcInvocation",
+	"type" : "normal"
+}

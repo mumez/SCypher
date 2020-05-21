@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "CyObject",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"props",
+		"labels"
+	],
+	"name" : "CyNode",
+	"type" : "normal"
+}

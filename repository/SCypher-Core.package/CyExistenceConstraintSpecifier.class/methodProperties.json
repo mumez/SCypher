@@ -1,0 +1,17 @@
+{
+	"instance" : {
+		"isForRelationship:" : "MasashiUmezawa 2/26/2017 23:38",
+		"tokensTargetOn:" : "MasashiUmezawa 2/26/2017 23:30",
+		"prop:" : "MasashiUmezawa 2/26/2017 23:28",
+		"target" : "MasashiUmezawa 2/26/2017 23:33",
+		"isForRelationship" : "MasashiUmezawa 2/26/2017 23:37",
+		"tokensAssertionOn:" : "MasashiUmezawa 2/26/2017 23:31",
+		"target:" : "MasashiUmezawa 2/26/2017 23:33",
+		"tokensOn:" : "MasashiUmezawa 2/26/2017 23:28",
+		"prop" : "MasashiUmezawa 2/26/2017 23:28"
+	},
+	"class" : {
+		"target:prop:" : "MasashiUmezawa 2/26/2017 23:29",
+		"relationshipName:type:prop:" : "MasashiUmezawa 2/26/2017 23:46"
+	}
+}

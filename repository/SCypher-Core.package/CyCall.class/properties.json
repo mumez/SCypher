@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "CyClause",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"procInvocation",
+		"yieldPhrase"
+	],
+	"name" : "CyCall",
+	"type" : "normal"
+}

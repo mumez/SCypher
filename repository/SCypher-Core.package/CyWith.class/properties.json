@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "CyReturn",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"where"
+	],
+	"name" : "CyWith",
+	"type" : "normal"
+}

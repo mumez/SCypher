@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "CyObjects",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "CyYield",
+	"type" : "normal"
+}

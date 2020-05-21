@@ -1,0 +1,3 @@
+actions
+squareBegin
+	self add: '['

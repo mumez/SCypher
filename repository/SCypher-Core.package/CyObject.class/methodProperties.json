@@ -1,0 +1,31 @@
+{
+	"instance" : {
+		"asCypherObject" : "MasashiUmezawa 1/3/2017 00:43",
+		"join:in:" : "MasashiUmezawa 12/31/2016 23:47",
+		"printCypherOn:" : "MasashiUmezawa 12/17/2016 17:05",
+		"alias:" : "MasashiUmezawa 12/17/2016 15:51",
+		"," : "MasashiUmezawa 1/3/2017 14:28",
+		"isCyObject" : "MasashiUmezawa 1/3/2017 00:36",
+		"identifier:" : "MasashiUmezawa 12/17/2016 15:51",
+		"identifier" : "MasashiUmezawa 12/17/2016 15:51",
+		"tokensAliasOn:" : "MasashiUmezawa 1/3/2017 22:02",
+		"join:in:by:" : "MasashiUmezawa 12/31/2016 23:46",
+		"printOn:" : "MasashiUmezawa 1/3/2017 14:30",
+		"value" : "MasashiUmezawa 12/17/2016 14:35",
+		"value:" : "MasashiUmezawa 12/17/2016 14:35",
+		"alias" : "MasashiUmezawa 12/17/2016 15:51",
+		"tokenArray" : "MasashiUmezawa 1/2/2017 22:44",
+		"tokensOn:" : "MasashiUmezawa 12/17/2016 16:29",
+		"as:" : "MasashiUmezawa 1/7/2017 23:40",
+		"cypherString" : "MasashiUmezawa 12/17/2016 17:03"
+	},
+	"class" : {
+		"value:" : "MasashiUmezawa 12/17/2016 14:43",
+		"value:as:" : "MasashiUmezawa 12/17/2016 16:16",
+		"of:" : "MasashiUmezawa 1/2/2017 23:28",
+		"identifier:" : "MasashiUmezawa 12/17/2016 16:55",
+		"alias:" : "MasashiUmezawa 12/17/2016 15:55",
+		"of:as:" : "MasashiUmezawa 1/2/2017 23:28",
+		"name:" : "MasashiUmezawa 12/17/2016 17:12"
+	}
+}

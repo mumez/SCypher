@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "CyClause",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"inExpression",
+		"updatingClauses"
+	],
+	"name" : "CyForEach",
+	"type" : "normal"
+}

@@ -1,0 +1,19 @@
+{
+	"instance" : {
+		"when:then:" : "MasashiUmezawa 1/7/2017 23:20",
+		"alternatives:" : "MasashiUmezawa 1/7/2017 21:58",
+		"else:" : "MasashiUmezawa 1/8/2017 00:08",
+		"tokensAlternativesOn:" : "MasashiUmezawa 1/8/2017 00:04",
+		"target" : "MasashiUmezawa 1/7/2017 23:28",
+		"alternatives" : "MasashiUmezawa 1/7/2017 22:15",
+		"tokensElseOn:" : "MasashiUmezawa 1/7/2017 23:51",
+		"else" : "MasashiUmezawa 1/7/2017 21:58",
+		"tokensOn:" : "MasashiUmezawa 1/7/2017 23:31"
+	},
+	"class" : {
+		"when:then:else:" : "MasashiUmezawa 1/7/2017 23:43",
+		"of:when:then:else:" : "MasashiUmezawa 1/7/2017 23:48",
+		"of:when:then:" : "MasashiUmezawa 1/7/2017 23:04",
+		"when:then:" : "MasashiUmezawa 1/7/2017 23:06"
+	}
+}

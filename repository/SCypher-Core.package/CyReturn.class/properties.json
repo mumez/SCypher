@@ -1,0 +1,17 @@
+{
+	"commentStamp" : "",
+	"super" : "CyClause",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"isDistinct",
+		"items",
+		"orderBy",
+		"skip",
+		"limit"
+	],
+	"name" : "CyReturn",
+	"type" : "normal"
+}

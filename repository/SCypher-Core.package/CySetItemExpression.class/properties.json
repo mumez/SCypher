@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "CyObject",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"operator",
+		"labelString"
+	],
+	"name" : "CySetItemExpression",
+	"type" : "normal"
+}

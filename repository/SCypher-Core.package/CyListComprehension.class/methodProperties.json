@@ -1,0 +1,15 @@
+{
+	"instance" : {
+		"tokensFilterOn:" : "MasashiUmezawa 1/7/2017 16:46",
+		"projectionExpression" : "MasashiUmezawa 1/7/2017 16:47",
+		"tokensProjectionOn:" : "MasashiUmezawa 1/9/2017 00:35",
+		"projectionExpression:" : "MasashiUmezawa 1/7/2017 16:47",
+		"filterExpression:" : "MasashiUmezawa 1/7/2017 16:39",
+		"filterExpression" : "MasashiUmezawa 1/7/2017 16:39",
+		"tokensOn:" : "MasashiUmezawa 1/7/2017 16:46"
+	},
+	"class" : {
+		"forEach:where:andProject:" : "MasashiUmezawa 1/9/2017 00:39",
+		"filter:andProject:" : "MasashiUmezawa 1/9/2017 00:00"
+	}
+}

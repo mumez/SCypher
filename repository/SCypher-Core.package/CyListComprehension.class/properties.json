@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "CyObject",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"filterExpression",
+		"projectionExpression"
+	],
+	"name" : "CyListComprehension",
+	"type" : "normal"
+}

@@ -1,0 +1,17 @@
+{
+	"commentStamp" : "",
+	"super" : "CyObject",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"start",
+		"end",
+		"types",
+		"direction",
+		"props"
+	],
+	"name" : "CyRelationship",
+	"type" : "normal"
+}

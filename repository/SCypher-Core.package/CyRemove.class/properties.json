@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "CyClause",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "CyRemove",
+	"type" : "normal"
+}

@@ -1,0 +1,3 @@
+actions
+squareEnd
+	self add: ']'

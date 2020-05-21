@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "CyAtomExpression",
+	"category" : "SCypher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "CyLiteral",
+	"type" : "normal"
+}
