@@ -1,3 +1,0 @@
-printing
-cypherIdentifierString
-	^self cypherString 

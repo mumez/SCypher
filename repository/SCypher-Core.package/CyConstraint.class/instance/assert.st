@@ -1,3 +1,0 @@
-accessing
-assert
-	^ assert

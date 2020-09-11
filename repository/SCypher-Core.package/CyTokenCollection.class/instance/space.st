@@ -1,3 +1,0 @@
-actions
-space
-	^self add: ' '

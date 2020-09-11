@@ -1,3 +1,0 @@
-actions
-parenBegin
-	self add: '('

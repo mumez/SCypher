@@ -1,3 +1,0 @@
-actions
-parenEnd
-	self add: ')'
