@@ -1,3 +1,0 @@
-actions
-squareBegin
-	self add: '['
