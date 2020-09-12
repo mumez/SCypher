@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'accessor'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -38,8 +38,18 @@ CyIdentifier >> add: newValue [
 ]
 
 { #category : #converting }
+CyIdentifier >> asCypherParameter [
+	^self asParameter
+]
+
+{ #category : #converting }
 CyIdentifier >> asNode [
 	^CyNode identifier: self identifier
+]
+
+{ #category : #converting }
+CyIdentifier >> asParameter [
+	^(CyParameter name: self identifier) accessor: self accessor; yourself
 ]
 
 { #category : #converting }

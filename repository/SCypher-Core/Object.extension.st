@@ -1,6 +1,11 @@
 Extension { #name : #Object }
 
 { #category : #'*SCypher-Core-converting' }
+Object >> asCypherIdentifier [
+	^CyIdentifier of: self
+]
+
+{ #category : #'*SCypher-Core-converting' }
 Object >> asCypherObject [
 	^CyIdentifier of: self
 ]
