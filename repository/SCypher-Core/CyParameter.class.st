@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'accessor'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #accessing }
@@ -18,7 +18,8 @@ CyParameter >> accessor: anObject [
 ]
 
 { #category : #converting }
-CyParameter >> asDictionary [
+CyParameter >> asCypherParameter [
+	^self
 ]
 
 { #category : #testing }
