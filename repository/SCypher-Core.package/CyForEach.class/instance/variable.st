@@ -1,3 +1,0 @@
-accessing
-variable
-	^self value	

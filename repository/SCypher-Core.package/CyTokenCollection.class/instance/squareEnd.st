@@ -1,3 +1,0 @@
-actions
-squareEnd
-	self add: ']'
