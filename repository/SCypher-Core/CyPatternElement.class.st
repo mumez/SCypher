@@ -6,12 +6,22 @@ Class {
 		'shortestPathType',
 		'assignedTo'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
 CyPatternElement class >> withAll: aCollection [
 	^self new relationships: aCollection; yourself
+]
+
+{ #category : #accessing }
+CyPatternElement >> assignedTo [
+	^ assignedTo
+]
+
+{ #category : #accessing }
+CyPatternElement >> assignedTo: anIdentifier [
+	assignedTo := anIdentifier
 ]
 
 { #category : #accessing }
@@ -36,6 +46,17 @@ CyPatternElement >> shortestPathType: anObject [
 
 { #category : #printing }
 CyPatternElement >> tokensOn: tokens [
+	| assignedVariable |
+	assignedVariable := self assignedTo.
+	assignedVariable ifNil: [^ self tokensRelationshipsOn: tokens].
+	assignedVariable tokensOn: tokens.
+	tokens spacedAdd: '='.
+	self tokensRelationshipsOn: tokens
+	
+]
+
+{ #category : #printing }
+CyPatternElement >> tokensRelationshipsOn: tokens [
 	| rels |
 	rels := self relationships.
 	rels isEmptyOrNil ifTrue: [ ^self ].
