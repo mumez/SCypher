@@ -38,7 +38,7 @@ String >> cypherString [
 
 { #category : #'*SCypher-Core-printing' }
 String >> cypherValueString [
-	^self asJsonString 
+	^STON toJsonString: self
 ]
 
 { #category : #'*SCypher-Core-printing' }

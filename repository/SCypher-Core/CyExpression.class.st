@@ -7,7 +7,7 @@ Class {
 		'expressions',
 		'enclosed'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation-shortcuts' }
@@ -161,6 +161,36 @@ CyExpression class >> xor: expA with: expB [
 	^self type: #infix operator: 'XOR' expressions: {expA. expB}
 ]
 
+{ #category : #'shortcuts-conditions' }
+CyExpression >> & otherExpression [
+	^self and: otherExpression 
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> * otherExpression [
+	^self class multiple: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> + otherExpression [
+	^self class plus: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> - otherExpression [
+	^self class minus: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> / otherExpression [
+	^self class divide: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> and: otherExpression [
+	^self class and: self with: otherExpression
+]
+
 { #category : #actions }
 CyExpression >> beEnclosed [
 	self enclosed: true
@@ -171,6 +201,16 @@ CyExpression >> bePlain [
 	self enclosed: false
 ]
 
+{ #category : #'shortcuts-conditions' }
+CyExpression >> concat: otherExpression [
+	^self class concat: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> containsWith: otherExpression [
+	^self class contain: self with: otherExpression
+]
+
 { #category : #accessing }
 CyExpression >> enclosed [
 	^enclosed ifNil: [ enclosed := true ]
@@ -179,6 +219,16 @@ CyExpression >> enclosed [
 { #category : #accessing }
 CyExpression >> enclosed: aBoolean [
 	enclosed := aBoolean
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> endsWith: otherExpression [
+	^self class end: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> exists [
+	^self class exists: self
 ]
 
 { #category : #accessing }
@@ -196,6 +246,16 @@ CyExpression >> isInfix [
 	^self type = #infix
 ]
 
+{ #category : #'shortcuts-conditions' }
+CyExpression >> isNULL [
+	^self class isNull: self
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> isNotNULL [
+	^self class isNotNull: self
+]
+
 { #category : #testing }
 CyExpression >> isPostfix [
 	^self type = #postfix
@@ -204,6 +264,21 @@ CyExpression >> isPostfix [
 { #category : #testing }
 CyExpression >> isPrefix [
 	^self type = #prefix
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> matchesRegex: otherExpression [
+	^self class regex: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> minus [
+	^self class minus: self
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> not [
+	^self class not: self
 ]
 
 { #category : #accessing }
@@ -216,6 +291,26 @@ CyExpression >> operator: anObject [
 	operator := anObject
 ]
 
+{ #category : #'shortcuts-conditions' }
+CyExpression >> or: otherExpression [
+	^self class or: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> plus [
+	^self class plus: self
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> power: otherExpression [
+	^self class power: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> startsWith: otherExpression [
+	^self class start: self with: otherExpression
+]
+
 { #category : #printing }
 CyExpression >> tokensInfixTypeOn: tokens [
 	| leftExp rightExp |
@@ -223,9 +318,9 @@ CyExpression >> tokensInfixTypeOn: tokens [
 	rightExp := self expressions last.
 	
 	self enclosed ifTrue: [tokens parenBegin].
-	tokens add: leftExp cypherString.
+	tokens add: leftExp cypherValueString.
 	tokens spacedAdd: self operator.
-	tokens add: rightExp cypherString.
+	tokens add: rightExp cypherValueString.
 	self enclosed ifTrue: [tokens parenEnd]
 ]
 
@@ -238,9 +333,9 @@ CyExpression >> tokensOn: tokens [
 
 { #category : #printing }
 CyExpression >> tokensPostfixTypeOn: tokens [
-	tokens add: self expressions cypherString.
+	tokens add: self expressions cypherValueString.
 	tokens space.
-	tokens add: self operator cypherString.
+	tokens add: self operator cypherValueString.
 	
 ]
 
@@ -248,7 +343,7 @@ CyExpression >> tokensPostfixTypeOn: tokens [
 CyExpression >> tokensPrefixTypeOn: tokens [
 	tokens add: self operator.
 	tokens space.
-	tokens parenEnclosedAdd: self expressions cypherString 
+	tokens parenEnclosedAdd: self expressions cypherValueString 
 ]
 
 { #category : #accessing }
@@ -260,4 +355,14 @@ CyExpression >> type [
 CyExpression >> type: anObject [
 	"#prefix, #infix. #postfix"
 	type := anObject
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> xor: otherExpression [
+	^self class xor: self with: otherExpression
+]
+
+{ #category : #'shortcuts-conditions' }
+CyExpression >> | otherExpression [
+	^self or: otherExpression 
 ]
