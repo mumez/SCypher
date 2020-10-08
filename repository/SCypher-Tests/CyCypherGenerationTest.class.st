@@ -34,6 +34,23 @@ CyCypherGenerationTest >> testGenerateComplexPredicate [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateMatchWhereReturn [
+	| node nameParam query generated expected |
+	node := 'n' asCypherIdentifier.
+	nameParam := 'name' asCypherParameter.
+	query := CyQuery match: (CyNode name: node label: 'Movie')
+		where: ((node @ 'title') = nameParam)
+		return: node orderBy: (node @ 'title') skip: 'skip' asCypherParameter limit: 'limit' asCypherParameter.
+	
+	generated := query cypherString. 
+	expected := 'MATCH (n:Movie)
+WHERE (n.title = $name)
+RETURN n ORDER BY n.title SKIP 0 LIMIT $limit '.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGeneratePredicate [
 	| node nameParam predicate generated expected |
 	node := 'n' asCypherIdentifier.

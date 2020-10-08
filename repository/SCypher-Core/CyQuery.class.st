@@ -10,17 +10,38 @@ Class {
 
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return [
-	^self match: match where: where return: return skip: 0 limit: 100
+	^self match: match where: where return: return limit: 100
 ]
 
 { #category : #shortcuts }
-CyQuery class >> match: match where: where return: return skip: skip limit: limit [
+CyQuery class >> match: match where: where return: return in: returnBlock [
 	| query |
 	query := self new.
 	query addMatch: match;
 		addWhere: where;
-		addReturn: return skip: skip limit: limit.
+		addReturn: return in: returnBlock.
 	^ query
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where return: return limit: limit [
+	^self match: match where: where return: return in: [:r |
+		 r limit: limit
+	]
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where return: return orderBy: orderBy skip: skip limit: limit [
+	^self match: match where: where return: return in: [:r |
+		 r orderBy: orderBy; skip: 0; limit: limit
+	]
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where return: return skip: skip limit: limit [
+	^self match: match where: where return: return in: [:r |
+		 r skip: skip; limit: limit
+	]
 ]
 
 { #category : #'instance creation' }
@@ -30,29 +51,30 @@ CyQuery class >> statements: statements [
 
 { #category : #adding }
 CyQuery >> addMatch: matchClause [
-	self addStatement: (self matchClass of: matchClause)
+	^ self addStatement: (self matchClass of: matchClause)
 ]
 
 { #category : #adding }
 CyQuery >> addReturn: returnClause [
-	self addStatement: (self returnClass of: returnClause)
+	^ self addReturn: returnClause in: nil
 ]
 
 { #category : #adding }
-CyQuery >> addReturn: returnClause skip: skip limit: limit [
+CyQuery >> addReturn: returnClause in: aBlock [
 	| return |
-	return := (self returnClass of: returnClause) skip: skip; limit: limit.
+	return := self returnClass of: returnClause.
+	aBlock ifNotNil: [ aBlock value: return ].
 	self addStatement: return
 ]
 
 { #category : #adding }
 CyQuery >> addStatement: cyperStatement [
-	self statements add: cyperStatement
+	^ self statements add: cyperStatement
 ]
 
 { #category : #adding }
 CyQuery >> addWhere: whereClause [
-	self addStatement: (self whereClass of: whereClause)
+	^ self addStatement: (self whereClass of: whereClause)
 ]
 
 { #category : #accessing }
