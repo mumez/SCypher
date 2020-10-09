@@ -10,7 +10,7 @@ Class {
 
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return [
-	^self match: match where: where return: return limit: 100
+	^self match: match where: where return: return in: nil
 ]
 
 { #category : #shortcuts }
@@ -64,16 +64,17 @@ CyQuery >> addReturn: returnClause in: aBlock [
 	| return |
 	return := self returnClass of: returnClause.
 	aBlock ifNotNil: [ aBlock value: return ].
-	self addStatement: return
+	^ self addStatement: return
 ]
 
 { #category : #adding }
-CyQuery >> addStatement: cyperStatement [
-	^ self statements add: cyperStatement
+CyQuery >> addStatement: cypherStatement [
+	^ self statements add: cypherStatement
 ]
 
 { #category : #adding }
 CyQuery >> addWhere: whereClause [
+	whereClause ifNil: [ ^ nil ].
 	^ self addStatement: (self whereClass of: whereClause)
 ]
 
