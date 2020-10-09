@@ -117,6 +117,17 @@ CyIdentifier >> greaterThanOrEquals: otherExpression [
 	^self expressionClass ge: self with: otherExpression
 ]
 
+{ #category : #shortcuts }
+CyIdentifier >> havingAll: assocArray [
+	| accumExp |
+	accumExp := nil.
+	assocArray do: [ :assoc | |exp|
+		exp := (self prop: assoc key) equals: assoc value.
+		accumExp ifNil: [ accumExp := exp ] ifNotNil: [ accumExp := accumExp and: exp]
+	].
+	^accumExp
+]
+
 { #category : #accessing }
 CyIdentifier >> identifier: identifierLikeThing [
 	(identifierLikeThing isKindOf: CyObject)
