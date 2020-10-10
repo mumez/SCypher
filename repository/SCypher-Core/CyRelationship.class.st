@@ -5,10 +5,11 @@ Class {
 		'start',
 		'end',
 		'types',
+		'range',
 		'direction',
 		'props'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -126,6 +127,16 @@ CyRelationship >> props: anObject [
 ]
 
 { #category : #accessing }
+CyRelationship >> range [
+	^ range
+]
+
+{ #category : #accessing }
+CyRelationship >> range: rangeLiteral [
+	range := rangeLiteral
+]
+
+{ #category : #accessing }
 CyRelationship >> start [
 	^ start
 ]
@@ -142,6 +153,11 @@ CyRelationship >> tokensCenterPartEdgeOn: tokens [
 	
 	self types ifNotNil: [ tokens add: ':' ].
 	self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
+	
+	self range ifNotNil: [  
+		tokens add: '*'.
+		tokens add: (self range tokensOn: tokens)	
+	].
 	
 	self props ifNotNil: [  
 		self types ifNotNil: [ tokens add: ' ' ].

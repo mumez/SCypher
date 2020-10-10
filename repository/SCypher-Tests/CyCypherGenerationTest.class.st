@@ -1,7 +1,7 @@
 Class {
 	#name : #CyCypherGenerationTest,
 	#superclass : #TestCase,
-	#category : 'SCypher-Tests'
+	#category : #'SCypher-Tests'
 }
 
 { #category : #tests }
@@ -18,6 +18,46 @@ CyCypherGenerationTest >> testGenerateBasicQuery [
 	
 	expected := 'MATCH (n:Movie {released:2000})
 RETURN n.title, n.summary ORDER BY n.released SKIP 2 LIMIT 10 '.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateComplexPredicate [
+	| node nameParam predicate generated expected |
+	node := 'n' asCypherIdentifier.
+	predicate := (((node @ 'name') = 'Peter') xor: ((node @ 'age') < 30 and: (node @ 'name') = 'Timothy')) or: ((node @ 'name') = 'Peter' or: (node @ 'name') = 'Timothy') not.
+	generated := predicate cypherString.
+	expected := '(((n.name = "Peter") XOR ((n.age < 30) AND (n.name = "Timothy"))) OR NOT (((n.name = "Peter") OR (n.name = "Timothy"))))'.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateMatchWhereReturn [
+	| node nameParam query generated expected |
+	node := 'n' asCypherIdentifier.
+	nameParam := 'name' asCypherParameter.
+	query := CyQuery match: (CyNode name: node label: 'Movie')
+		where: ((node @ 'title') = nameParam)
+		return: node orderBy: (node @ 'title') skip: 'skip' asCypherParameter limit: 'limit' asCypherParameter.
+	
+	generated := query cypherString. 
+	expected := 'MATCH (n:Movie)
+WHERE (n.title = $name)
+RETURN n ORDER BY n.title SKIP 0 LIMIT $limit '.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGeneratePredicate [
+	| node nameParam predicate generated expected |
+	node := 'n' asCypherIdentifier.
+	nameParam := 'name' asCypherParameter.
+	predicate := ((node @ 'title') <= nameParam).
+	generated := predicate cypherString.
+	expected := '(n.title <= $name)'.
 	
 	self assert: generated equals: expected.
 ]
