@@ -9,6 +9,28 @@ Class {
 }
 
 { #category : #shortcuts }
+CyQuery class >> match: match where: where [
+	| query |
+	query := self new.
+	query addMatch: match;
+		addWhere: where.
+	^ query
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where delete: delete [
+	^self match: match where: where delete: delete in: nil
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where delete: delete in: deleteBlock [
+	| query |
+	query := self match: match where: where.
+	query addDelete: delete in: deleteBlock.
+	^ query
+]
+
+{ #category : #shortcuts }
 CyQuery class >> match: match where: where return: return [
 	^self match: match where: where return: return in: nil
 ]
@@ -16,10 +38,8 @@ CyQuery class >> match: match where: where return: return [
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return in: returnBlock [
 	| query |
-	query := self new.
-	query addMatch: match;
-		addWhere: where;
-		addReturn: return in: returnBlock.
+	query := self match: match where: where.
+	query addReturn: return in: returnBlock.
 	^ query
 ]
 
@@ -50,6 +70,19 @@ CyQuery class >> statements: statements [
 ]
 
 { #category : #adding }
+CyQuery >> addDelete: deleteClause [
+	^ self addDelete: deleteClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addDelete: deleteClause in: aBlock [
+	| delete |
+	delete := self deleteClass of: deleteClause.
+	aBlock ifNotNil: [ aBlock value: delete ].
+	^ self addStatement: delete
+]
+
+{ #category : #adding }
 CyQuery >> addMatch: matchClause [
 	^ self addStatement: (self matchClass of: matchClause)
 ]
@@ -76,6 +109,11 @@ CyQuery >> addStatement: cypherStatement [
 CyQuery >> addWhere: whereClause [
 	whereClause ifNil: [ ^ nil ].
 	^ self addStatement: (self whereClass of: whereClause)
+]
+
+{ #category : #factory }
+CyQuery >> deleteClass [
+	^ CyDelete
 ]
 
 { #category : #accessing }
