@@ -64,6 +64,19 @@ CyQuery class >> match: match where: where return: return skip: skip limit: limi
 	]
 ]
 
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where set: set [
+	^self match: match where: where set: set in: nil
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where set: set in: setBlock [
+	| query |
+	query := self match: match where: where.
+	query addSet: set in: setBlock.
+	^ query
+]
+
 { #category : #'instance creation' }
 CyQuery class >> statements: statements [
 	^self new statements: statements; yourself
@@ -98,6 +111,19 @@ CyQuery >> addReturn: returnClause in: aBlock [
 	return := self returnClass of: returnClause.
 	aBlock ifNotNil: [ aBlock value: return ].
 	^ self addStatement: return
+]
+
+{ #category : #adding }
+CyQuery >> addSet: returnClause [
+	^ self addSet: returnClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addSet: setClause in: aBlock [
+	| set |
+	set := self setClass of: setClause.
+	aBlock ifNotNil: [ aBlock value: set ].
+	^ self addStatement: set
 ]
 
 { #category : #adding }
@@ -139,6 +165,11 @@ CyQuery >> printString [
 { #category : #factory }
 CyQuery >> returnClass [
 	^ CyReturn 
+]
+
+{ #category : #factory }
+CyQuery >> setClass [
+	^ CySet
 ]
 
 { #category : #accessing }
