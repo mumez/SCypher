@@ -38,8 +38,8 @@ CyIdentifier >> accessor: anObject [
 ]
 
 { #category : #converting }
-CyIdentifier >> add: newValue [
-	^CySetItemExpression of: self add: newValue
+CyIdentifier >> addAll: newValue [
+	^CySetItemExpression of: self addAll: newValue
 ]
 
 { #category : #converting }
