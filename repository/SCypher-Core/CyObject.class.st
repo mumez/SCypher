@@ -6,7 +6,7 @@ Class {
 		'identifier',
 		'alias'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -49,6 +49,31 @@ CyObject >> , otherCyObject [
 	^CyObjects withAll: {self. otherCyObject}
 ]
 
+{ #category : #'shortcuts-comparing' }
+CyObject >> < otherExpression [
+	^self lessThan: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> <= otherExpression [
+	^self lessThanOrEquals: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> = otherExpression [
+	^self equals: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> > otherExpression [
+	^self greaterThan: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> >= otherExpression [
+	^self greaterThanOrEquals: otherExpression
+]
+
 { #category : #accessing }
 CyObject >> alias [
 	^ alias
@@ -72,6 +97,26 @@ CyObject >> asCypherObject [
 { #category : #printing }
 CyObject >> cypherString [
 	^String streamContents: [ :str | self printCypherOn: str ]
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> equals: otherExpression [
+	^self expressionClass eq: self with: otherExpression
+]
+
+{ #category : #factory }
+CyObject >> expressionClass [
+	^ CyExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> greaterThan: otherExpression [
+	^self expressionClass gt: self with: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> greaterThanOrEquals: otherExpression [
+	^self expressionClass ge: self with: otherExpression
 ]
 
 { #category : #accessing }
@@ -102,6 +147,21 @@ CyObject >> join: separator in: tokens by: convertSelector [
 		tokenString := each perform: convertSelector.
 		all add: tokenString] separatedBy: [ all add: separator ].
 	^all
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> lessThan: otherExpression [
+	^self expressionClass lt: self with: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> lessThanOrEquals: otherExpression [
+	^self expressionClass le: self with: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> notEquals: otherExpression [
+	^self expressionClass neq: self with: otherExpression
 ]
 
 { #category : #printing }
@@ -145,4 +205,9 @@ CyObject >> value [
 { #category : #accessing }
 CyObject >> value: anObject [
 	value := anObject
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> ~= otherExpression [
+	^self notEquals: otherExpression
 ]

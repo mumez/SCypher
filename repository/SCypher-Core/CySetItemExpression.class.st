@@ -5,11 +5,11 @@ Class {
 		'operator',
 		'labelString'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
-CySetItemExpression class >> of: identifier add: value [
+CySetItemExpression class >> of: identifier addAll: value [
 	| inst |
 	inst := self operator: '+='.
 	inst identifier: identifier asCypherObject.

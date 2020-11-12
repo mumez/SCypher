@@ -22,31 +22,6 @@ CyIdentifier class >> of: identifier prop: propName as: alias [
 	^(self of: identifier prop: propName) alias: alias; yourself
 ]
 
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> < otherExpression [
-	^self lessThan: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> <= otherExpression [
-	^self lessThanOrEquals: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> = otherExpression [
-	^self equals: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> > otherExpression [
-	^self greaterThan: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> >= otherExpression [
-	^self greaterThanOrEquals: otherExpression
-]
-
 { #category : #shortcuts }
 CyIdentifier >> @ propName [
 	^self prop: propName
@@ -63,8 +38,8 @@ CyIdentifier >> accessor: anObject [
 ]
 
 { #category : #converting }
-CyIdentifier >> add: newValue [
-	^CySetItemExpression of: self add: newValue
+CyIdentifier >> addAll: newValue [
+	^CySetItemExpression of: self addAll: newValue
 ]
 
 { #category : #converting }
@@ -97,24 +72,14 @@ CyIdentifier >> desc [
 	^(CySortSpecifier of: self) desc
 ]
 
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> equals: otherExpression [
-	^self expressionClass eq: self with: otherExpression
-]
-
 { #category : #factory }
 CyIdentifier >> expressionClass [
 	^ CyExpression
 ]
 
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> greaterThan: otherExpression [
-	^self expressionClass gt: self with: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> greaterThanOrEquals: otherExpression [
-	^self expressionClass ge: self with: otherExpression
+{ #category : #accessing }
+CyIdentifier >> getId [
+	^ CyProcInvocation name: 'id' expression: self
 ]
 
 { #category : #shortcuts }
@@ -138,21 +103,6 @@ CyIdentifier >> identifier: identifierLikeThing [
 { #category : #converting }
 CyIdentifier >> labels: labels [
 	^CySetItemExpression of: self labels: labels
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> lessThan: otherExpression [
-	^self expressionClass lt: self with: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> lessThanOrEquals: otherExpression [
-	^self expressionClass le: self with: otherExpression
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> notEquals: otherExpression [
-	^self expressionClass neq: self with: otherExpression
 ]
 
 { #category : #converting }
@@ -179,9 +129,4 @@ CyIdentifier >> tokensOn: tokens [
 	self identifier ifNotNil: [:nm | tokens add: nm cypherIdentifierString].
 	self tokensAccessorOn: tokens.
 	self tokensAliasOn: tokens
-]
-
-{ #category : #'shortcuts-comparing' }
-CyIdentifier >> ~= otherExpression [
-	^self notEquals: otherExpression
 ]
