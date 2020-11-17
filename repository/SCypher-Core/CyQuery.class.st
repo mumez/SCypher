@@ -77,9 +77,33 @@ CyQuery class >> match: match where: where set: set in: setBlock [
 	^ query
 ]
 
+{ #category : #shortcuts }
+CyQuery class >> matchRelationshipNodeAt: nodeAId nodeAt: nodeBId [
+	| a b nodeA nodeB where |
+	a := 'a' asCypherIdentifier.
+	b := 'b' asCypherIdentifier.
+	nodeA := a asNode.
+	nodeB := b asNode.
+	where := (a getId = nodeAId) & (b getId = nodeBId).
+	^self match: (nodeA, nodeB) where: where.
+]
+
 { #category : #'instance creation' }
 CyQuery class >> statements: statements [
 	^self new statements: statements; yourself
+]
+
+{ #category : #adding }
+CyQuery >> addCreate: createClause [
+	^ self addCreate: createClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addCreate: createClause in: aBlock [
+	| create |
+	create := self createClass of: createClause.
+	aBlock ifNotNil: [ aBlock value: create ].
+	^ self addStatement: create
 ]
 
 { #category : #adding }
@@ -98,6 +122,19 @@ CyQuery >> addDelete: deleteClause in: aBlock [
 { #category : #adding }
 CyQuery >> addMatch: matchClause [
 	^ self addStatement: (self matchClass of: matchClause)
+]
+
+{ #category : #adding }
+CyQuery >> addMerge: mergeClause [
+	^ self addMerge: mergeClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addMerge: mergeClause in: aBlock [
+	| merge |
+	merge := self mergeClass of: mergeClause.
+	aBlock ifNotNil: [ aBlock value: merge ].
+	^ self addStatement: merge
 ]
 
 { #category : #adding }
@@ -138,6 +175,11 @@ CyQuery >> addWhere: whereClause [
 ]
 
 { #category : #factory }
+CyQuery >> createClass [
+	^ CyCreate
+]
+
+{ #category : #factory }
 CyQuery >> deleteClass [
 	^ CyDelete
 ]
@@ -155,6 +197,11 @@ CyQuery >> delimiter: anObject [
 { #category : #factory }
 CyQuery >> matchClass [
 	^ CyMatch 
+]
+
+{ #category : #factory }
+CyQuery >> mergeClass [
+	^ CyMerge
 ]
 
 { #category : #printing }
