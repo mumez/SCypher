@@ -151,9 +151,10 @@ CyRelationship >> tokensCenterPartEdgeOn: tokens [
 	tokens add: '['.
 	self identifier ifNotNil: [:nm | tokens add: nm].
 	
-	self types ifNotNil: [ tokens add: ':' ].
-	self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
-	
+	self types ifNotNil: [ tokens add: ':' .
+		self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
+	].
+
 	self range ifNotNil: [  
 		tokens add: '*'.
 		tokens add: (self range tokensOn: tokens)	
@@ -162,12 +163,12 @@ CyRelationship >> tokensCenterPartEdgeOn: tokens [
 	self props ifNotNil: [  
 		self types ifNotNil: [ tokens add: ' ' ].
 		tokens add: (self props cypherString )].
-	
 	tokens add: ']'
 ]
 
 { #category : #printing }
 CyRelationship >> tokensEndNodeOn: tokens [
+	self end ifNil: [ ^self ].
 	tokens addAll: self end tokenArray
 ]
 
@@ -191,6 +192,7 @@ CyRelationship >> tokensPropertiesOn: tokens [
 
 { #category : #printing }
 CyRelationship >> tokensStartNodeOn: tokens [
+	self start ifNil: [ ^self ].
 	tokens addAll: self start tokenArray.
 ]
 

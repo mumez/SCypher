@@ -47,7 +47,7 @@ CyIdentifier >> asCypherParameter [
 	^self asParameter
 ]
 
-{ #category : #converting }
+{ #category : #'converting-node' }
 CyIdentifier >> asNode [
 	^CyNode identifier: self identifier
 ]
@@ -57,7 +57,12 @@ CyIdentifier >> asParameter [
 	^(CyParameter name: self identifier) accessor: self accessor; yourself
 ]
 
-{ #category : #converting }
+{ #category : #'converting-relationship' }
+CyIdentifier >> asRelationship [
+	^CyRelationship identifier: self identifier
+]
+
+{ #category : #'converting-sort' }
 CyIdentifier >> asc [
 	^(CySortSpecifier of: self) asc
 ]
@@ -67,7 +72,7 @@ CyIdentifier >> cypherIdentifierString [
 	^self cypherString 
 ]
 
-{ #category : #converting }
+{ #category : #'converting-sort' }
 CyIdentifier >> desc [
 	^(CySortSpecifier of: self) desc
 ]
@@ -105,9 +110,29 @@ CyIdentifier >> labels: labels [
 	^CySetItemExpression of: self labels: labels
 ]
 
+{ #category : #'converting-node' }
+CyIdentifier >> node: labels props: propertiesArray [
+	| node labelsArray |
+	node := self asNode.
+	labelsArray := labels isArray ifTrue: [ labels ] ifFalse:[Array with: labels].
+	node labels: labelsArray.
+	node props: propertiesArray.
+	^ node
+]
+
 { #category : #converting }
 CyIdentifier >> prop: propName [
 	^self class of: self identifier prop: propName
+]
+
+{ #category : #'converting-relationship' }
+CyIdentifier >> rel: types props: propertiesArray [
+	| rel typesArray |
+	rel := self asRelationship.
+	typesArray := types isArray ifTrue: [ types ] ifFalse:[Array with: types].
+	rel types: typesArray.
+	rel props: propertiesArray.
+	^ rel
 ]
 
 { #category : #converting }
