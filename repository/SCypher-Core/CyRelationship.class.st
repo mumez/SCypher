@@ -59,8 +59,8 @@ CyRelationship class >> start: start end: end type: type props: props [
 { #category : #'actions-path pattern' }
 CyRelationship >> - aCyNode [
 	| rel |
-	rel := self class
-		start: self start end: aCyNode name: self identifier types: self types props: self props.
+	rel := self copy.
+	rel end: aCyNode.
 	^ rel
 ]
 
@@ -90,6 +90,16 @@ CyRelationship >> beIn [
 { #category : #actions }
 CyRelationship >> beOut [
 	^self direction: #out
+]
+
+{ #category : #copying }
+CyRelationship >> copy [
+	| rel |
+	rel := self class
+		start: self start end: self end name: self identifier types: self types props: self props.
+	rel range: self range.
+	rel direction: self direction.
+	^rel
 ]
 
 { #category : #accessing }

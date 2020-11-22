@@ -51,6 +51,26 @@ RETURN n ORDER BY n.title SKIP 0 LIMIT $limit '.
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGeneratePathPatterns [
+	| n1 n2 r1 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
+	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
+	n2 := ('b' asCypherIdentifier node: 'Label2' props: {'cc'->2.}).
+	r1 := ('r' asCypherIdentifier rel: 'Type1' props: {'dd'->3.'ee'->'EE'}).
+	
+	pattern1 := n1 - r1 - n2.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})'.
+	self assert: pattern1 cypherString equals: expected1.
+	
+	pattern2 := n1 - r1 -> n2.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {"dd":3,"ee":"EE"}]->(b:Label2 {cc:2})'.
+	self assert: pattern2 cypherString equals: expected2.
+	
+	pattern3 := n1 <- r1 - n2.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})'.
+	self assert: pattern3 cypherString equals: expected3.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGeneratePredicate [
 	| node nameParam predicate generated expected |
 	node := 'n' asCypherIdentifier.
