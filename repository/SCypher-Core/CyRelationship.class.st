@@ -56,6 +56,20 @@ CyRelationship class >> start: start end: end type: type props: props [
 		yourself
 ]
 
+{ #category : #'actions-path pattern' }
+CyRelationship >> - aCyNode [
+	self end: aCyNode.
+	^ self
+]
+
+{ #category : #'actions-path pattern' }
+CyRelationship >> -> aCyNode [
+	| rel |
+	rel := (self - aCyNode).
+	rel isIn ifTrue: [ ^rel beBoth ].
+	^rel beOut
+]
+
 { #category : #converting }
 CyRelationship >> accessor: propName [
 	^CyIdentifier of: self identifier prop: propName
@@ -143,7 +157,7 @@ CyRelationship >> start [
 
 { #category : #accessing }
 CyRelationship >> start: anObject [
-	start := anObject  asCypherObject asNode
+	start := anObject asCypherObject asNode
 ]
 
 { #category : #printing }

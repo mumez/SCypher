@@ -5,7 +5,7 @@ Class {
 		'props',
 		'labels'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -36,6 +36,18 @@ CyNode class >> name: nodeName labels: labels props: propsDict [
 { #category : #'instance creation' }
 CyNode class >> name: nodeName props: propsDict [
 	^self name: nodeName labels: nil props: propsDict
+]
+
+{ #category : #'actions-path pattern' }
+CyNode >> - aCyRelationship [
+	aCyRelationship start: self.
+	^ aCyRelationship
+	
+]
+
+{ #category : #'actions-path pattern' }
+CyNode >> <- aCyRelationship [
+	^(self - aCyRelationship) beIn
 ]
 
 { #category : #converting }
