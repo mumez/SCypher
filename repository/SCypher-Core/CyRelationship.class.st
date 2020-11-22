@@ -58,8 +58,10 @@ CyRelationship class >> start: start end: end type: type props: props [
 
 { #category : #'actions-path pattern' }
 CyRelationship >> - aCyNode [
-	self end: aCyNode.
-	^ self
+	| rel |
+	rel := self class
+		start: self start end: aCyNode name: self identifier types: self types props: self props.
+	^ rel
 ]
 
 { #category : #'actions-path pattern' }

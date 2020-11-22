@@ -40,8 +40,10 @@ CyNode class >> name: nodeName props: propsDict [
 
 { #category : #'actions-path pattern' }
 CyNode >> - aCyRelationship [
-	aCyRelationship start: self.
-	^ aCyRelationship
+	| rel |
+	rel := aCyRelationship class
+		start: self end: aCyRelationship end name: aCyRelationship identifier types: aCyRelationship types props: aCyRelationship props.
+	^ rel
 	
 ]
 
