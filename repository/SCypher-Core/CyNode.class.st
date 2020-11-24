@@ -48,8 +48,29 @@ CyNode >> - aCyRelationship [
 ]
 
 { #category : #'actions-path pattern' }
+CyNode >> -- aCyNode [
+	| rel |
+	rel := CyRelationship empty.
+	^ self - rel - aCyNode 
+]
+
+{ #category : #'actions-path pattern' }
+CyNode >> --> aCyNode [
+	| rel |
+	rel := CyRelationship empty.
+	^ self - rel -> aCyNode 
+]
+
+{ #category : #'actions-path pattern' }
 CyNode >> <- aCyRelationship [
 	^(self - aCyRelationship) beIn
+]
+
+{ #category : #'actions-path pattern' }
+CyNode >> <-- aCyNode [
+	| rel |
+	rel := CyRelationship empty.
+	^ self <- rel - aCyNode 
 ]
 
 { #category : #converting }

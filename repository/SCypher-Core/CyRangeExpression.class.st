@@ -3,9 +3,10 @@ Class {
 	#superclass : #CyObject,
 	#instVars : [
 		'from',
-		'to'
+		'to',
+		'enclosed'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -26,6 +27,26 @@ CyRangeExpression class >> toLastFrom: startExpression [
 	^ self from: startExpression to: nil
 ]
 
+{ #category : #'instance creation' }
+CyRangeExpression class >> variable [
+	^self from: nil to: nil
+]
+
+{ #category : #actions }
+CyRangeExpression >> beEnclosed [
+	self enclosed: true
+]
+
+{ #category : #accessing }
+CyRangeExpression >> enclosed [
+	^enclosed ifNil: [ enclosed := false ]
+]
+
+{ #category : #accessing }
+CyRangeExpression >> enclosed: aBoolean [
+	enclosed := aBoolean
+]
+
 { #category : #accessing }
 CyRangeExpression >> from [
 	^ from
@@ -34,6 +55,11 @@ CyRangeExpression >> from [
 { #category : #accessing }
 CyRangeExpression >> from: anObject [
 	from := anObject
+]
+
+{ #category : #testing }
+CyRangeExpression >> isVariable [
+	^self from isNil and: [self to isNil]
 ]
 
 { #category : #accessing }
@@ -53,11 +79,11 @@ CyRangeExpression >> tokensFromOn: tokens [
 
 { #category : #printing }
 CyRangeExpression >> tokensOn: tokens [
-	tokens squareBegin.
+	self enclosed ifTrue: [tokens squareBegin].
 	self tokensFromOn: tokens.
-	tokens add: '..'.
+	self isVariable ifFalse: [ tokens add: '..' ].
 	self tokensToOn: tokens.
-	tokens squareEnd.
+	self enclosed ifTrue: [tokens squareEnd].
 ]
 
 { #category : #printing }
