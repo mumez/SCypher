@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+CyPatternElement class >> with: aRelationship [
+	^self withAll: { aRelationship }
+]
+
+{ #category : #'instance creation' }
 CyPatternElement class >> withAll: aCollection [
 	^self new relationships: aCollection; yourself
 ]
@@ -59,8 +64,8 @@ CyPatternElement >> tokensOn: tokens [
 CyPatternElement >> tokensRelationshipsOn: tokens [
 	| rels |
 	rels := self relationships.
-	rels isEmptyOrNil ifTrue: [ ^self ].
-	rels size = 1 ifTrue: [ rels first tokensOn: tokens ].
+	rels isEmptyOrNil ifTrue: [ ^ self ].
+	rels size = 1 ifTrue: [ ^ rels first tokensOn: tokens ].
 	rels allButLastDo: [ :each |
 		each tokensWithoutEndNodeOn: tokens
 	].

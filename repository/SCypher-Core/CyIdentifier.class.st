@@ -120,6 +120,11 @@ CyIdentifier >> node: labels props: propertiesArray [
 	^ node
 ]
 
+{ #category : #'converting-path' }
+CyIdentifier >> path: aRelationship [ 
+	^ aRelationship asPattern assignedTo: self
+]
+
 { #category : #converting }
 CyIdentifier >> prop: propName [
 	^self class of: self identifier prop: propName

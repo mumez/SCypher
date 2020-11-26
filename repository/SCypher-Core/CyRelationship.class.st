@@ -102,6 +102,11 @@ CyRelationship >> accessor: propName [
 	^CyIdentifier of: self identifier prop: propName
 ]
 
+{ #category : #converting }
+CyRelationship >> asPattern [
+	^ CyPatternElement with: self
+]
+
 { #category : #actions }
 CyRelationship >> beBoth [
 	^self direction: #both
