@@ -16,7 +16,22 @@ CyPatternElement class >> with: aRelationship [
 
 { #category : #'instance creation' }
 CyPatternElement class >> withAll: aCollection [
-	^self new relationships: aCollection; yourself
+	^self new relationships: aCollection asOrderedCollection; yourself
+]
+
+{ #category : #'actions-path pattern' }
+CyPatternElement >> - aNode [
+	self lastRelationship end: aNode
+]
+
+{ #category : #'actions-path pattern' }
+CyPatternElement >> -> aNode [
+	self lastRelationship end: aNode; beOut
+]
+
+{ #category : #adding }
+CyPatternElement >> addRelationship: anRelationship [
+	self relationships add: anRelationship
 ]
 
 { #category : #accessing }
@@ -27,6 +42,11 @@ CyPatternElement >> assignedTo [
 { #category : #accessing }
 CyPatternElement >> assignedTo: anIdentifier [
 	assignedTo := anIdentifier
+]
+
+{ #category : #accessing }
+CyPatternElement >> lastRelationship [
+	^self relationships last
 ]
 
 { #category : #accessing }

@@ -82,19 +82,18 @@ CyRelationship class >> start: start end: end type: type props: props [
 ]
 
 { #category : #'actions-path pattern' }
-CyRelationship >> - aCyNode [
-	| rel |
-	rel := self copy.
-	rel end: aCyNode.
-	^ rel
+CyRelationship >> - aCyNodeOrRelationship [
+	^ aCyNodeOrRelationship connectByRelationship: self
 ]
 
 { #category : #'actions-path pattern' }
-CyRelationship >> -> aCyNode [
-	| rel |
-	rel := (self - aCyNode).
-	rel isIn ifTrue: [ ^rel beBoth ].
-	^rel beOut
+CyRelationship >> -> aCyNodeOrRelationship [
+	^ aCyNodeOrRelationship outConnectByRelationship: self
+]
+
+{ #category : #'actions-path pattern' }
+CyRelationship >> <- aCyRelationship [
+	^ aCyRelationship inConnectByRelationship: self
 ]
 
 { #category : #converting }
@@ -120,6 +119,15 @@ CyRelationship >> beIn [
 { #category : #actions }
 CyRelationship >> beOut [
 	^self direction: #out
+]
+
+{ #category : #'dispatching-path pattern' }
+CyRelationship >> connectByRelationship: aLeftSideRelationship [
+	| nextRel |
+	nextRel := self copy.
+	nextRel start: aLeftSideRelationship end.
+	^ aLeftSideRelationship asPattern addRelationship: nextRel.
+	
 ]
 
 { #category : #copying }
@@ -152,6 +160,14 @@ CyRelationship >> end: anObject [
 	end := anObject asCypherObject asNode
 ]
 
+{ #category : #'dispatching-path pattern' }
+CyRelationship >> inConnectByRelationship: aLeftSideRelationship [
+	| pathPattern |
+	pathPattern := self connectByRelationship: aLeftSideRelationship.
+	pathPattern lastRelationship beIn.
+	^pathPattern
+]
+
 { #category : #testing }
 CyRelationship >> isBoth [
 	^self direction = #both
@@ -176,6 +192,14 @@ CyRelationship >> isIn [
 { #category : #testing }
 CyRelationship >> isOut [
 	^self direction = #out
+]
+
+{ #category : #'dispatching-path pattern' }
+CyRelationship >> outConnectByRelationship: aLeftSideRelationship [
+	| pathPattern |
+	pathPattern := self connectByRelationship: aLeftSideRelationship.
+	pathPattern lastRelationship beOut.
+	^pathPattern
 ]
 
 { #category : #accessing }

@@ -83,6 +83,14 @@ CyNode >> asNode [
 	^self
 ]
 
+{ #category : #'dispatching-path pattern' }
+CyNode >> connectByRelationship: aRelationship [
+	| rel |
+	rel := aRelationship copy.
+	rel end: self.
+	^ rel
+]
+
 { #category : #accessing }
 CyNode >> labels [
 	^ labels
@@ -91,6 +99,14 @@ CyNode >> labels [
 { #category : #accessing }
 CyNode >> labels: anObject [
 	labels := anObject
+]
+
+{ #category : #'dispatching-path pattern' }
+CyNode >> outConnectByRelationship: aRelationship [
+	| rel |
+	rel := (aRelationship - self).
+	rel isIn ifTrue: [ ^rel beBoth ].
+	^rel beOut
 ]
 
 { #category : #printing }
