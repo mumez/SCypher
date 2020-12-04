@@ -78,14 +78,20 @@ CyQuery class >> match: match where: where set: set in: setBlock [
 ]
 
 { #category : #shortcuts }
-CyQuery class >> matchRelationshipNodeAt: nodeAId nodeAt: nodeBId [
-	| a b nodeA nodeB where |
+CyQuery class >> matchNodeAt: nodeAId nodeAt: nodeBId mergePatternAndReturnIn: aBlock [ 
+	| a b r p nodeA nodeB where query pattern |
 	a := 'a' asCypherIdentifier.
 	b := 'b' asCypherIdentifier.
+	r := 'r' asCypherIdentifier.
+	p := 'p' asCypherIdentifier.
 	nodeA := a asNode.
 	nodeB := b asNode.
 	where := (a getId = nodeAId) & (b getId = nodeBId).
-	^self match: (nodeA, nodeB) where: where.
+	query := self match: (nodeA, nodeB) where: where.
+	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
+	query addMerge: pattern.
+	query addReturn: p.
+	^ query
 ]
 
 { #category : #'instance creation' }
