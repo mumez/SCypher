@@ -54,7 +54,14 @@ CyRelationship class >> start: start end: end name: identifier type: type [
 
 { #category : #'instance creation' }
 CyRelationship class >> start: start end: end name: identifier type: type props: props [
-	^self start: start end: end name: identifier types: {type} props: props
+	| types |
+	types := type ifNotNil: [ {type} ].
+	^ self
+		start: start
+		end: end
+		name: identifier
+		types: types
+		props: props
 ]
 
 { #category : #'instance creation' }
@@ -256,7 +263,7 @@ CyRelationship >> start: anObject [
 CyRelationship >> tokensCenterPartEdgeOn: tokens [
 	self isEmpty ifTrue: [ ^self ].
 	tokens add: '['.
-	self identifier ifNotNil: [:nm | tokens add: nm].
+	self identifier ifNotNil: [:nm | tokens add: nm cypherIdentifierString].
 	
 	self types ifNotNil: [ tokens add: ':' .
 		self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
