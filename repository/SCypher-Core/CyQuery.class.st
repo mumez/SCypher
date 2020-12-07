@@ -9,6 +9,14 @@ Class {
 }
 
 { #category : #shortcuts }
+CyQuery class >> match: match [
+	| query |
+	query := self new.
+	query addMatch: match.
+	^ query
+]
+
+{ #category : #shortcuts }
 CyQuery class >> match: match where: where [
 	| query |
 	query := self new.
