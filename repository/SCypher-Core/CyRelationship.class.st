@@ -273,10 +273,7 @@ CyRelationship >> tokensCenterPartEdgeOn: tokens [
 		tokens add: '*'.
 		tokens add: (self range cypherString)	
 	].
-	
-	self props ifNotNil: [  
-		self types ifNotNil: [ tokens add: ' ' ].
-		tokens add: (self props cypherString )].
+	self tokensPropertiesOn: tokens.
 	tokens add: ']'
 ]
 
@@ -301,7 +298,10 @@ CyRelationship >> tokensOn: tokens [
 
 { #category : #printing }
 CyRelationship >> tokensPropertiesOn: tokens [
-	
+	self props ifNil: [ ^self ].
+	self props ifNotEmpty: [  
+		self types ifNotNil: [ tokens add: ' ' ].
+		tokens add: (self props cypherString )].
 ]
 
 { #category : #printing }
