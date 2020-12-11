@@ -22,7 +22,7 @@ Object >> asCypherValue [
 
 { #category : #'*SCypher-Core-printing' }
 Object >> cypherString [
-	^N4PortableUtil default jsonStringFrom: self
+	^CyObject jsonStringFrom: self
 ]
 
 { #category : #'*SCypher-Core-printing' }
