@@ -19,6 +19,18 @@ CyObject class >> identifier: anObject [
 	^self new identifier: anObject
 ]
 
+{ #category : #utilities }
+CyObject class >> jsonStringFrom: valueOrAssocs [ 
+	| dict rawJsonString param |
+	((valueOrAssocs isArray or: [valueOrAssocs class = OrderedCollection])
+		and: [valueOrAssocs notEmpty and: [valueOrAssocs first isKindOf: Association]])
+		ifTrue: [dict := valueOrAssocs asDictionary.
+			param := dict]
+		ifFalse: [param := valueOrAssocs].
+	rawJsonString := STONJSON toString: param.
+	^ rawJsonString
+]
+
 { #category : #'instance creation' }
 CyObject class >> name: anObject [
 	^self identifier: anObject
