@@ -13,6 +13,31 @@ Class {
 }
 
 { #category : #'instance creation' }
+CyRelationship class >> empty [
+	^self new
+]
+
+{ #category : #'instance creation' }
+CyRelationship class >> rangeFrom: from [
+	^ self empty rangeFrom: from
+]
+
+{ #category : #'instance creation' }
+CyRelationship class >> rangeFrom: from to: to [
+	^ self empty rangeFrom: from to: to
+]
+
+{ #category : #'instance creation' }
+CyRelationship class >> rangeTo: to [
+	^ self empty rangeTo: to
+]
+
+{ #category : #'instance creation' }
+CyRelationship class >> rangeVariable [
+	^ self empty rangeVariable
+]
+
+{ #category : #'instance creation' }
 CyRelationship class >> start: start end: end [
 	^self start: start end: end name: nil
 ]
@@ -29,7 +54,14 @@ CyRelationship class >> start: start end: end name: identifier type: type [
 
 { #category : #'instance creation' }
 CyRelationship class >> start: start end: end name: identifier type: type props: props [
-	^self start: start end: end name: identifier types: {type} props: props
+	| types |
+	types := type ifNotNil: [ {type} ].
+	^ self
+		start: start
+		end: end
+		name: identifier
+		types: types
+		props: props
 ]
 
 { #category : #'instance creation' }
@@ -56,9 +88,29 @@ CyRelationship class >> start: start end: end type: type props: props [
 		yourself
 ]
 
+{ #category : #'actions-path pattern' }
+CyRelationship >> - aCyNodeOrRelationship [
+	^ aCyNodeOrRelationship connectByRelationship: self
+]
+
+{ #category : #'actions-path pattern' }
+CyRelationship >> -> aCyNodeOrRelationship [
+	^ aCyNodeOrRelationship outConnectByRelationship: self
+]
+
+{ #category : #'actions-path pattern' }
+CyRelationship >> <- aCyRelationship [
+	^ aCyRelationship inConnectByRelationship: self
+]
+
 { #category : #converting }
 CyRelationship >> accessor: propName [
 	^CyIdentifier of: self identifier prop: propName
+]
+
+{ #category : #converting }
+CyRelationship >> asPattern [
+	^ CyPatternElement with: self
 ]
 
 { #category : #actions }
@@ -74,6 +126,25 @@ CyRelationship >> beIn [
 { #category : #actions }
 CyRelationship >> beOut [
 	^self direction: #out
+]
+
+{ #category : #'dispatching-path pattern' }
+CyRelationship >> connectByRelationship: aLeftSideRelationship [
+	| nextRel |
+	nextRel := self copy.
+	nextRel start: aLeftSideRelationship end.
+	^ aLeftSideRelationship asPattern addRelationship: nextRel.
+	
+]
+
+{ #category : #copying }
+CyRelationship >> copy [
+	| rel |
+	rel := self class
+		start: self start end: self end name: self identifier types: self types copy props: self props copy.
+	rel range: self range copy.
+	rel direction: self direction copy.
+	^rel
 ]
 
 { #category : #accessing }
@@ -96,6 +167,14 @@ CyRelationship >> end: anObject [
 	end := anObject asCypherObject asNode
 ]
 
+{ #category : #'dispatching-path pattern' }
+CyRelationship >> inConnectByRelationship: aLeftSideRelationship [
+	| pathPattern |
+	pathPattern := self connectByRelationship: aLeftSideRelationship.
+	pathPattern lastRelationship beIn.
+	^pathPattern
+]
+
 { #category : #testing }
 CyRelationship >> isBoth [
 	^self direction = #both
@@ -107,6 +186,12 @@ CyRelationship >> isDirected [
 ]
 
 { #category : #testing }
+CyRelationship >> isEmpty [
+	^ ((self identifier isNil and: [ self types isNil ])
+		and: [ self range isNil ]) and: [ self props isNil ]
+]
+
+{ #category : #testing }
 CyRelationship >> isIn [
 	^self direction = #in
 ]
@@ -114,6 +199,14 @@ CyRelationship >> isIn [
 { #category : #testing }
 CyRelationship >> isOut [
 	^self direction = #out
+]
+
+{ #category : #'dispatching-path pattern' }
+CyRelationship >> outConnectByRelationship: aLeftSideRelationship [
+	| pathPattern |
+	pathPattern := self connectByRelationship: aLeftSideRelationship.
+	pathPattern lastRelationship beOut.
+	^pathPattern
 ]
 
 { #category : #accessing }
@@ -136,6 +229,26 @@ CyRelationship >> range: rangeLiteral [
 	range := rangeLiteral
 ]
 
+{ #category : #'actions-range' }
+CyRelationship >> rangeFrom: from [
+	^self rangeFrom: from to: nil
+]
+
+{ #category : #'actions-range' }
+CyRelationship >> rangeFrom: from to: to [
+	self range: (CyRangeExpression from: from to: to)
+]
+
+{ #category : #'actions-range' }
+CyRelationship >> rangeTo: to [
+	^self rangeFrom: nil to: to
+]
+
+{ #category : #'actions-range' }
+CyRelationship >> rangeVariable [
+	self rangeFrom: nil to: nil
+]
+
 { #category : #accessing }
 CyRelationship >> start [
 	^ start
@@ -143,31 +256,30 @@ CyRelationship >> start [
 
 { #category : #accessing }
 CyRelationship >> start: anObject [
-	start := anObject  asCypherObject asNode
+	start := anObject asCypherObject asNode
 ]
 
 { #category : #printing }
 CyRelationship >> tokensCenterPartEdgeOn: tokens [
+	self isEmpty ifTrue: [ ^self ].
 	tokens add: '['.
-	self identifier ifNotNil: [:nm | tokens add: nm].
+	self identifier ifNotNil: [:nm | tokens add: nm cypherIdentifierString].
 	
-	self types ifNotNil: [ tokens add: ':' ].
-	self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
-	
+	self types ifNotNil: [ tokens add: ':' .
+		self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
+	].
+
 	self range ifNotNil: [  
 		tokens add: '*'.
-		tokens add: (self range tokensOn: tokens)	
+		tokens add: (self range cypherString)	
 	].
-	
-	self props ifNotNil: [  
-		self types ifNotNil: [ tokens add: ' ' ].
-		tokens add: (self props cypherString )].
-	
+	self tokensPropertiesOn: tokens.
 	tokens add: ']'
 ]
 
 { #category : #printing }
 CyRelationship >> tokensEndNodeOn: tokens [
+	self end ifNil: [ ^self ].
 	tokens addAll: self end tokenArray
 ]
 
@@ -186,11 +298,15 @@ CyRelationship >> tokensOn: tokens [
 
 { #category : #printing }
 CyRelationship >> tokensPropertiesOn: tokens [
-	
+	self props ifNil: [ ^self ].
+	self props ifNotEmpty: [  
+		self types ifNotNil: [ tokens add: ' ' ].
+		tokens add: (self props cypherString )].
 ]
 
 { #category : #printing }
 CyRelationship >> tokensStartNodeOn: tokens [
+	self start ifNil: [ ^self ].
 	tokens addAll: self start tokenArray.
 ]
 
@@ -203,18 +319,11 @@ CyRelationship >> tokensStartPartEdgeOn: tokens [
 ]
 
 { #category : #printing }
-CyRelationship >> tokensTypeOn: tokens [
-	
-]
-
-{ #category : #printing }
 CyRelationship >> tokensWithoutEndNodeOn: tokens [
 	self tokensStartNodeOn: tokens.
 	self tokensStartPartEdgeOn: tokens.
 	
-	((self identifier notNil or: [ self type notNil ]) or: [ self props notNil ]) ifTrue: [ 
-		self tokensCenterPartEdgeOn: tokens
-	].
+	self tokensCenterPartEdgeOn: tokens.
 	
 	self tokensEndPartEdgeOn: tokens
 ]

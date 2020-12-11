@@ -34,6 +34,28 @@ CyCypherGenerationTest >> testGenerateComplexPredicate [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateLongPathPatterns [
+	| n1 n2 n3 r1 r2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
+	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
+	n2 := ('b' asCypherIdentifier node: 'Label2' props: {'cc'->2}).
+	n3 := ('c' asCypherIdentifier node: 'Label3' props: {}).
+	r1 := ('r1' asCypherIdentifier rel: 'Type1' props: {'dd'->3.'ee'->'EE'}).
+	r2 := ('r2' asCypherIdentifier rel: 'Type2' props: {'ff'->4}).
+	
+	pattern1 := n1 - r1 - n2 - r2 - n3.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r1:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})-[r2:Type2 {"ff":4}]-(c:Label3)'.
+	self assert: pattern1 cypherString equals: expected1.
+	
+	pattern2 := n1 - r1 -> n2 <- r2 - n3.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r1:Type1 {"dd":3,"ee":"EE"}]->(b:Label2 {cc:2})<-[r2:Type2 {"ff":4}]-(c:Label3)'.
+	self assert: pattern2 cypherString equals: expected2.
+	
+	pattern3 := n1 <- r1 - n2 - r2 -> n3.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r1:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})-[r2:Type2 {"ff":4}]->(c:Label3)'.
+	self assert: pattern3 cypherString equals: expected3.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateMatchWhereReturn [
 	| node nameParam query generated expected |
 	node := 'n' asCypherIdentifier.
@@ -48,6 +70,45 @@ WHERE (n.title = $name)
 RETURN n ORDER BY n.title SKIP 0 LIMIT $limit '.
 	
 	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateNodesOnlyPathPatterns [
+	| n1 n2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
+	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
+	n2 := ('b' asCypherIdentifier node: 'Label2' props: {'cc'->2.}).
+	
+	pattern1 := n1 -- n2.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})--(b:Label2 {cc:2})'.
+	self assert: pattern1 cypherString equals: expected1.
+	
+	pattern2 := n1 --> n2.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-->(b:Label2 {cc:2})'.
+	self assert: pattern2 cypherString equals: expected2.
+	
+	pattern3 := n1 <-- n2.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<--(b:Label2 {cc:2})'.
+	self assert: pattern3 cypherString equals: expected3.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGeneratePathPatterns [
+	| n1 n2 r1 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
+	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
+	n2 := ('b' asCypherIdentifier node: 'Label2' props: {'cc'->2.}).
+	r1 := ('r' asCypherIdentifier rel: 'Type1' props: {'dd'->3.'ee'->'EE'}).
+	
+	pattern1 := n1 - r1 - n2.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})'.
+	self assert: pattern1 cypherString equals: expected1.
+	
+	pattern2 := n1 - r1 -> n2.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {"dd":3,"ee":"EE"}]->(b:Label2 {cc:2})'.
+	self assert: pattern2 cypherString equals: expected2.
+	
+	pattern3 := n1 <- r1 - n2.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})'.
+	self assert: pattern3 cypherString equals: expected3.
 ]
 
 { #category : #tests }
@@ -85,6 +146,28 @@ CyCypherGenerationTest >> testGenerateRelationshipQuery [
 RETURN m, p, p2 ORDER BY m.name, p.name DESC, p2.name DESC LIMIT 10 '.
 	
 	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateVariablePatterns [
+	| n1 n2 r1 r2 r3 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
+	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
+	n2 := ('b' asCypherIdentifier node: 'Label2' props: {'cc'->2.}).
+	r1 := ('r' asCypherIdentifier asRelationship rangeFrom: 1 to: 5).
+	r2 := ('r' asCypherIdentifier asRelationship rangeFrom: 1).
+	r3 := ('r' asCypherIdentifier asRelationship rangeTo: 5).
+	
+	pattern1 := n1 - r1 - n2.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r*1..5]-(b:Label2 {cc:2})'.
+	self assert: pattern1 cypherString equals: expected1.
+	
+	pattern2 := n1 - r2 -> n2.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r*1..]->(b:Label2 {cc:2})'.
+	self assert: pattern2 cypherString equals: expected2.
+	
+	pattern3 := n1 <- r3 - n2.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r*..5]-(b:Label2 {cc:2})'.
+	self assert: pattern3 cypherString equals: expected3.
 ]
 
 { #category : #tests }

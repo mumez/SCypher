@@ -9,6 +9,14 @@ Class {
 }
 
 { #category : #shortcuts }
+CyQuery class >> match: match [
+	| query |
+	query := self new.
+	query addMatch: match.
+	^ query
+]
+
+{ #category : #shortcuts }
 CyQuery class >> match: match where: where [
 	| query |
 	query := self new.
@@ -77,9 +85,69 @@ CyQuery class >> match: match where: where set: set in: setBlock [
 	^ query
 ]
 
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId createIn: aBlock [ 
+	| a b r p nodeA nodeB where query pattern |
+	a := 'a' asCypherIdentifier.
+	b := 'b' asCypherIdentifier.
+	r := 'r' asCypherIdentifier.
+	p := 'p' asCypherIdentifier.
+	nodeA := a asNode.
+	nodeB := b asNode.
+	where := (a getId = nodeAId) & (b getId = nodeBId).
+	query := self match: (nodeA, nodeB) where: where.
+	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
+	query addCreate: pattern.
+	query addReturn: p.
+	^ query
+]
+
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId mergeIn: aBlock [ 
+	| a b r p nodeA nodeB where query pattern |
+	a := 'a' asCypherIdentifier.
+	b := 'b' asCypherIdentifier.
+	r := 'r' asCypherIdentifier.
+	p := 'p' asCypherIdentifier.
+	nodeA := a asNode.
+	nodeB := b asNode.
+	where := (a getId = nodeAId) & (b getId = nodeBId).
+	query := self match: (nodeA, nodeB) where: where.
+	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
+	query addMerge: pattern.
+	query addReturn: p.
+	^ query
+]
+
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock [
+	| s e r p rel endNode path |
+	s := 's' asCypherIdentifier.
+	e := 'e' asCypherIdentifier.
+	r := 'r' asCypherIdentifier.
+	p := 'p' asCypherIdentifier.
+	rel := r rel: typeOrTypes props: relPropsArray.
+	endNode := endNodeBlock value: e.
+	path := p path: (pathCreationBlock value: s asNode value: rel value: endNode).
+	^ self match: path where: (s getId equals: startNodeId) return: p.
+]
+
 { #category : #'instance creation' }
 CyQuery class >> statements: statements [
 	^self new statements: statements; yourself
+]
+
+{ #category : #adding }
+CyQuery >> addCreate: createClause [
+	^ self addCreate: createClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addCreate: createClause in: aBlock [
+	| create |
+	create := self createClass of: createClause.
+	aBlock ifNotNil: [ aBlock value: create ].
+	^ self addStatement: create
 ]
 
 { #category : #adding }
@@ -98,6 +166,19 @@ CyQuery >> addDelete: deleteClause in: aBlock [
 { #category : #adding }
 CyQuery >> addMatch: matchClause [
 	^ self addStatement: (self matchClass of: matchClause)
+]
+
+{ #category : #adding }
+CyQuery >> addMerge: mergeClause [
+	^ self addMerge: mergeClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addMerge: mergeClause in: aBlock [
+	| merge |
+	merge := self mergeClass of: mergeClause.
+	aBlock ifNotNil: [ aBlock value: merge ].
+	^ self addStatement: merge
 ]
 
 { #category : #adding }
@@ -138,6 +219,11 @@ CyQuery >> addWhere: whereClause [
 ]
 
 { #category : #factory }
+CyQuery >> createClass [
+	^ CyCreate
+]
+
+{ #category : #factory }
 CyQuery >> deleteClass [
 	^ CyDelete
 ]
@@ -155,6 +241,11 @@ CyQuery >> delimiter: anObject [
 { #category : #factory }
 CyQuery >> matchClass [
 	^ CyMatch 
+]
+
+{ #category : #factory }
+CyQuery >> mergeClass [
+	^ CyMerge
 ]
 
 { #category : #printing }

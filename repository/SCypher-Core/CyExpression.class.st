@@ -77,17 +77,17 @@ CyExpression class >> list: expA at: atExpression [
 
 { #category : #'instance creation-list' }
 CyExpression class >> list: expA from: fromExpression to: toExpression [
-	^self type: #postfix operator: (CyRangeExpression from: fromExpression to: toExpression) expressions: {expA}
+	^self type: #postfix operator: (CyRangeExpression from: fromExpression to: toExpression) beEnclosed expressions: {expA}
 ]
 
 { #category : #'instance creation-list' }
 CyExpression class >> list: expA fromFirstTo: endExpression [
-	^self type: #postfix operator: (CyRangeExpression fromFirstTo: endExpression) expressions: {expA}
+	^self type: #postfix operator: (CyRangeExpression fromFirstTo: endExpression) beEnclosed expressions: {expA}
 ]
 
 { #category : #'instance creation-list' }
 CyExpression class >> list: expA toLastFrom: startExpression [
-	^self type: #postfix operator: (CyRangeExpression toLastFrom: startExpression) expressions: {expA}
+	^self type: #postfix operator: (CyRangeExpression toLastFrom: startExpression) beEnclosed expressions: {expA}
 ]
 
 { #category : #'instance creation-comparison' }
