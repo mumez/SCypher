@@ -120,8 +120,8 @@ CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId mergeIn: aBlock [
 ]
 
 { #category : #shortcuts }
-CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock [
-	| s e r p rel endNode path |
+CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder [
+	| s e r p rel endNode path where andWhere |
 	s := 's' asCypherIdentifier.
 	e := 'e' asCypherIdentifier.
 	r := 'r' asCypherIdentifier.
@@ -129,7 +129,10 @@ CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPr
 	rel := r rel: typeOrTypes props: relPropsArray.
 	endNode := endNodeBlock value: e.
 	path := p path: (pathCreationBlock value: s asNode value: rel value: endNode).
-	^ self match: path where: (s getId equals: startNodeId) return: p.
+	where := (s getId equals: startNodeId).
+	andWhere := (whereClauseBuilder value: s value: r value: e).
+	andWhere ifNotNil: [ where := where and: andWhere ].
+	^ self match: path where: where return: p.
 ]
 
 { #category : #'instance creation' }
