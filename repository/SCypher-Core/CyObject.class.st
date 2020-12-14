@@ -106,9 +106,19 @@ CyObject >> asCypherObject [
 	^self
 ]
 
+{ #category : #'shortcuts-comparing' }
+CyObject >> contains: otherExpression [
+	^self expressionClass contain: self with: otherExpression
+]
+
 { #category : #printing }
 CyObject >> cypherString [
 	^String streamContents: [ :str | self printCypherOn: str ]
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> ends: otherExpression [
+	^self expressionClass end: self with: otherExpression
 ]
 
 { #category : #'shortcuts-comparing' }
@@ -187,6 +197,16 @@ CyObject >> printOn: aStream [
 	aStream nextPutAll: '('.
 	aStream nextPutAll: self cypherString.
 	aStream nextPutAll: ')'.
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> regex: otherExpression [
+	^self expressionClass regex: self with: otherExpression
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> starts: otherExpression [
+	^self expressionClass start: self with: otherExpression
 ]
 
 { #category : #converting }
