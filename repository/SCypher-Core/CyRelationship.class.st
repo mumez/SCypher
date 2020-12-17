@@ -216,7 +216,10 @@ CyRelationship >> props [
 
 { #category : #accessing }
 CyRelationship >> props: anObject [
-	props := anObject
+	anObject
+		ifNil: [ props := nil.
+			^ self ].
+	props := anObject asDictionary
 ]
 
 { #category : #accessing }

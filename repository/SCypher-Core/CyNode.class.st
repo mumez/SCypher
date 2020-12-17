@@ -149,5 +149,5 @@ CyNode >> tokensPropsOn: tokens [
 	prps := self props.
 	prps isEmptyOrNil ifTrue: [ ^self ].
 	
-	tokens preSpacedAdd: (prps cypherString )
+	tokens preSpacedAdd: (prps cypherString)
 ]
