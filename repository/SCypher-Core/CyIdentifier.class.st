@@ -111,6 +111,11 @@ CyIdentifier >> labels: labels [
 ]
 
 { #category : #'converting-node' }
+CyIdentifier >> node: labels [
+	^self node: labels props: #()
+]
+
+{ #category : #'converting-node' }
 CyIdentifier >> node: labels props: propertiesArray [
 	| node labelsArray |
 	node := self asNode.
@@ -128,6 +133,11 @@ CyIdentifier >> path: aRelationship [
 { #category : #converting }
 CyIdentifier >> prop: propName [
 	^self class of: self identifier prop: propName
+]
+
+{ #category : #'converting-relationship' }
+CyIdentifier >> rel: types [
+	^self rel: types props: #()
 ]
 
 { #category : #'converting-relationship' }
