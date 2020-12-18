@@ -7,6 +7,11 @@ Class {
 	#category : #'SCypher-Core'
 }
 
+{ #category : #converting }
+CyParameter >> -> paramValue [
+	^ self identifier -> paramValue
+]
+
 { #category : #accessing }
 CyParameter >> accessor [
 	^ accessor
