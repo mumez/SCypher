@@ -43,15 +43,15 @@ CyCypherGenerationTest >> testGenerateLongPathPatterns [
 	r2 := ('r2' asCypherIdentifier rel: 'Type2' props: {'ff'->4}).
 	
 	pattern1 := n1 - r1 - n2 - r2 - n3.
-	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r1:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})-[r2:Type2 {"ff":4}]-(c:Label3)'.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r1:Type1 {dd:3,ee:"EE"}]-(b:Label2 {cc:2})-[r2:Type2 {ff:4}]-(c:Label3)'.
 	self assert: pattern1 cypherString equals: expected1.
 	
 	pattern2 := n1 - r1 -> n2 <- r2 - n3.
-	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r1:Type1 {"dd":3,"ee":"EE"}]->(b:Label2 {cc:2})<-[r2:Type2 {"ff":4}]-(c:Label3)'.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r1:Type1 {dd:3,ee:"EE"}]->(b:Label2 {cc:2})<-[r2:Type2 {ff:4}]-(c:Label3)'.
 	self assert: pattern2 cypherString equals: expected2.
 	
 	pattern3 := n1 <- r1 - n2 - r2 -> n3.
-	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r1:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})-[r2:Type2 {"ff":4}]->(c:Label3)'.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r1:Type1 {dd:3,ee:"EE"}]-(b:Label2 {cc:2})-[r2:Type2 {ff:4}]->(c:Label3)'.
 	self assert: pattern3 cypherString equals: expected3.
 ]
 
@@ -99,15 +99,15 @@ CyCypherGenerationTest >> testGeneratePathPatterns [
 	r1 := ('r' asCypherIdentifier rel: 'Type1' props: {'dd'->3.'ee'->'EE'}).
 	
 	pattern1 := n1 - r1 - n2.
-	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})'.
+	expected1 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {dd:3,ee:"EE"}]-(b:Label2 {cc:2})'.
 	self assert: pattern1 cypherString equals: expected1.
 	
 	pattern2 := n1 - r1 -> n2.
-	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {"dd":3,"ee":"EE"}]->(b:Label2 {cc:2})'.
+	expected2 := '(a:Label1 {aa:1,bb:"BB"})-[r:Type1 {dd:3,ee:"EE"}]->(b:Label2 {cc:2})'.
 	self assert: pattern2 cypherString equals: expected2.
 	
 	pattern3 := n1 <- r1 - n2.
-	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r:Type1 {"dd":3,"ee":"EE"}]-(b:Label2 {cc:2})'.
+	expected3 := '(a:Label1 {aa:1,bb:"BB"})<-[r:Type1 {dd:3,ee:"EE"}]-(b:Label2 {cc:2})'.
 	self assert: pattern3 cypherString equals: expected3.
 ]
 
@@ -142,7 +142,7 @@ CyCypherGenerationTest >> testGenerateRelationshipQuery [
 
 	generated := query cypherString.
 	
-	expected := 'MATCH (p:Person)-[acted_in:ACTED_IN]->(m:Movie {released:2000})<-[acted_in2:ACTED_IN]-(p2:Person)
+	expected := 'MATCH (p:Person)-[`acted_in`:ACTED_IN]->(m:Movie {released:2000})<-[`acted_in2`:ACTED_IN]-(p2:Person)
 RETURN m, p, p2 ORDER BY m.name, p.name DESC, p2.name DESC LIMIT 10 '.
 	
 	self assert: generated equals: expected.
