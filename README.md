@@ -1,5 +1,5 @@
 # SCypher
-An extensible, dynamic Cypher query builder. Usable with [Neo4reSt](https://github.com/mumez/Neo4reSt).
+An extensible, dynamic Cypher query builder. Usable with [Neo4reSt](https://github.com/mumez/Neo4reSt) and [SCypherGraph](https://github.com/mumez/SCypherGraph).
 
 ## Installation
 
