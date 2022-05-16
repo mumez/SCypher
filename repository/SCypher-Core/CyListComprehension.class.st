@@ -5,8 +5,13 @@ Class {
 		'filterExpression',
 		'projectionExpression'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
+
+{ #category : #'instance creation' }
+CyListComprehension class >> filter: filterExp [
+	^ self filter: filterExp andProject: nil
+]
 
 { #category : #'instance creation' }
 CyListComprehension class >> filter: filterExp andProject: projectionExpression [
@@ -51,7 +56,8 @@ CyListComprehension >> tokensOn: tokens [
 	tokens squareBegin.
 	self tokensFilterOn: tokens.
 	self tokensProjectionOn: tokens.
-	tokens squareEnd
+	tokens squareEnd.
+	self tokensAliasOn: tokens.
 	
 ]
 
