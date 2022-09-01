@@ -42,7 +42,12 @@ CyListExpression class >> noneOf: filter [
 
 { #category : #'instance creation' }
 CyListExpression class >> selectBy: filter [
-	^self filterBy: filter
+	^CyListComprehension filter: filter
+]
+
+{ #category : #'instance creation' }
+CyListExpression class >> selectBy: filter collectBy: projectExpression [
+	^CyListComprehension filter: filter andProject: projectExpression
 ]
 
 { #category : #'instance creation' }
