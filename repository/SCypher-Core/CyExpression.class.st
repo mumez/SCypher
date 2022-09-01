@@ -266,6 +266,14 @@ CyExpression >> isPrefix [
 	^self type = #prefix
 ]
 
+{ #category : #private }
+CyExpression >> leftExpression [
+	| exp |
+	exp := self expressions first.
+	exp isSymbol ifTrue: [ ^ exp asCypherIdentifier ].
+	^ exp
+]
+
 { #category : #'shortcuts-conditions' }
 CyExpression >> matchesRegex: otherExpression [
 	^self class regex: self with: otherExpression
@@ -306,6 +314,14 @@ CyExpression >> power: otherExpression [
 	^self class power: self with: otherExpression
 ]
 
+{ #category : #private }
+CyExpression >> rightExpression [
+	| exp |
+	exp := self expressions last.
+	exp isSymbol ifTrue: [ ^ exp asCypherIdentifier ].
+	^ exp
+]
+
 { #category : #'shortcuts-conditions' }
 CyExpression >> startsWith: otherExpression [
 	^self class start: self with: otherExpression
@@ -314,8 +330,8 @@ CyExpression >> startsWith: otherExpression [
 { #category : #printing }
 CyExpression >> tokensInfixTypeOn: tokens [
 	| leftExp rightExp |
-	leftExp := self expressions first.
-	rightExp := self expressions last.
+	leftExp := self leftExpression.
+	rightExp := self rightExpression.
 	
 	self enclosed ifTrue: [tokens parenBegin].
 	tokens add: leftExp cypherValueString.
