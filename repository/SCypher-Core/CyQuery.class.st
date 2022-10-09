@@ -39,6 +39,19 @@ CyQuery class >> match: match where: where delete: delete in: deleteBlock [
 ]
 
 { #category : #shortcuts }
+CyQuery class >> match: match where: where remove: remove [
+	^self match: match where: where remove: remove in: nil
+]
+
+{ #category : #shortcuts }
+CyQuery class >> match: match where: where remove: remove in: removeBlock [
+	| query |
+	query := self match: match where: where.
+	query addRemove: remove in: removeBlock.
+	^ query
+]
+
+{ #category : #shortcuts }
 CyQuery class >> match: match where: where return: return [
 	^self match: match where: where return: return in: nil
 ]
@@ -185,6 +198,19 @@ CyQuery >> addMerge: mergeClause in: aBlock [
 ]
 
 { #category : #adding }
+CyQuery >> addRemove: removeClause [
+	^ self addRemove: removeClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addRemove: removeClause in: aBlock [
+	| remove |
+	remove := self removeClass of: removeClause.
+	aBlock ifNotNil: [ aBlock value: remove ].
+	^ self addStatement: remove
+]
+
+{ #category : #adding }
 CyQuery >> addReturn: returnClause [
 	^ self addReturn: returnClause in: nil
 ]
@@ -254,6 +280,11 @@ CyQuery >> mergeClass [
 { #category : #printing }
 CyQuery >> printString [
 	^self cypherString 
+]
+
+{ #category : #factory }
+CyQuery >> removeClass [
+	^ CyRemove
 ]
 
 { #category : #factory }
