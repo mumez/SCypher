@@ -134,6 +134,11 @@ CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId mergeIn: aBlock [
 
 { #category : #shortcuts }
 CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder [
+	^ self matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder returnIn: nil
+]
+
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder pathProcessIn: pathProcessBlock returnIn: returnBlock [
 	| s e r p rel endNode path where andWhere |
 	s := 's' asCypherIdentifier.
 	e := 'e' asCypherIdentifier.
@@ -145,7 +150,13 @@ CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPr
 	where := (s getId equals: startNodeId).
 	andWhere := (whereClauseBuilder value: s value: r value: e).
 	andWhere ifNotNil: [ where := where and: andWhere ].
-	^ self match: path where: where return: p.
+	pathProcessBlock ifNotNil: [ p := pathProcessBlock value: p ].
+	^ self match: path where: where return: p in: returnBlock.
+]
+
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder returnIn: returnBlock [
+	^ self matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder pathProcessIn: nil returnIn: returnBlock
 ]
 
 { #category : #'instance creation' }
