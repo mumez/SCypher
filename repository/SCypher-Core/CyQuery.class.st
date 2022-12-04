@@ -75,16 +75,16 @@ CyQuery class >> match: match where: where return: return limit: limit [
 CyQuery class >> match: match where: where return: return orderBy: orderBy skip: skip limit: limit [
 	^self match: match where: where return: return in: [:r |
 		orderBy ifNotNil: [r orderBy: orderBy].
-		skip ifNotNil: [ r skip ].
-		limit ifNotNil: [ r limit ].
+		skip ifNotNil: [ r skip: skip ].
+		limit ifNotNil: [ r limit: limit ].
 	]
 ]
 
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return skip: skip limit: limit [
 	^self match: match where: where return: return in: [:r |
-		skip ifNotNil: [ r skip ].
-		limit ifNotNil: [ r limit ].
+		skip ifNotNil: [ r skip: skip ].
+		limit ifNotNil: [ r limit: limit ].
 	]
 ]
 
