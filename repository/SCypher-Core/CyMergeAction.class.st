@@ -3,27 +3,27 @@ Class {
 	#superclass : #CyObject,
 	#instVars : [
 		'actionType',
-		'setExpression'
+		'expression'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
-CyMergeAction class >> actionType: aString setExpression: setExpression [
+CyMergeAction class >> actionType: aString expression: setExpression [
 	^ self new
 		actionType: aString;
-		setExpression: setExpression;
+		expression: setExpression;
 		yourself
 ]
 
 { #category : #'instance creation' }
-CyMergeAction class >> onCreateSet: setExpression [
-	^self actionType: 'CREATE' setExpression: setExpression
+CyMergeAction class >> onCreate: anExpression [
+	^self actionType: 'CREATE' expression: anExpression
 ]
 
 { #category : #'instance creation' }
-CyMergeAction class >> onMatchSet: setExpression [
-	^self actionType: 'MATCH' setExpression: setExpression
+CyMergeAction class >> onMatch: anExpression [
+	^self actionType: 'MATCH' expression: anExpression
 ]
 
 { #category : #accessing }
@@ -37,13 +37,13 @@ CyMergeAction >> actionType: anObject [
 ]
 
 { #category : #accessing }
-CyMergeAction >> setExpression [
-	^ setExpression
+CyMergeAction >> expression [
+	^ expression
 ]
 
 { #category : #accessing }
-CyMergeAction >> setExpression: anObject [
-	setExpression := anObject
+CyMergeAction >> expression: anObject [
+	expression := anObject
 ]
 
 { #category : #printing }
@@ -53,12 +53,12 @@ CyMergeAction >> tokensActionOn: tokens [
 ]
 
 { #category : #printing }
-CyMergeAction >> tokensOn: tokens [
-	self tokensActionOn: tokens.
-	self tokensSetExpressionOn: tokens
+CyMergeAction >> tokensExpressionOn: tokens [
+	tokens add: self expression cypherString
 ]
 
 { #category : #printing }
-CyMergeAction >> tokensSetExpressionOn: tokens [
-	tokens add: self setExpression cypherString
+CyMergeAction >> tokensOn: tokens [
+	self tokensActionOn: tokens.
+	self tokensExpressionOn: tokens
 ]
