@@ -252,6 +252,11 @@ CyObject >> min [
 ]
 
 { #category : #'shortcuts-comparing' }
+CyObject >> not [
+	^self expressionClass not: self
+]
+
+{ #category : #'shortcuts-comparing' }
 CyObject >> notEquals: otherExpression [
 	^self expressionClass neq: self with: otherExpression
 ]
