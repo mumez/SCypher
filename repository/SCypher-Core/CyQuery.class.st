@@ -20,8 +20,9 @@ CyQuery class >> match: match [
 CyQuery class >> match: match where: where [
 	| query |
 	query := self new.
-	query addMatch: match;
-		addWhere: where.
+	query addMatch: match.
+	(where isNil or: [ where isBlock ])
+		ifFalse:[query addWhere: where].
 	^ query
 ]
 
@@ -74,7 +75,8 @@ CyQuery class >> match: match where: where return: return limit: limit [
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return orderBy: orderBy skip: skip limit: limit [
 	^self match: match where: where return: return in: [:r |
-		orderBy ifNotNil: [r orderBy: orderBy].
+		(orderBy isNil or: [orderBy isBlock])
+			ifFalse: [r orderBy: orderBy].
 		skip ifNotNil: [ r skip: skip ].
 		limit ifNotNil: [ r limit: limit ].
 	]
