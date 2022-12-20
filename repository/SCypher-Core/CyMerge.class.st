@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'actions'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #accessing }
@@ -28,13 +28,23 @@ CyMerge >> mergeActionClass [
 ]
 
 { #category : #actions }
+CyMerge >> onCreate: anExpression [
+	self addAction: (self mergeActionClass onCreate: anExpression)
+]
+
+{ #category : #actions }
 CyMerge >> onCreateSet: setExpression [
-	self addAction: (self mergeActionClass onCreateSet: setExpression)
+	self onCreate: (CySet of: setExpression)
+]
+
+{ #category : #actions }
+CyMerge >> onMatch: anExpression [
+	self addAction: (self mergeActionClass onMatch: anExpression)
 ]
 
 { #category : #actions }
 CyMerge >> onMatchSet: setExpression [
-	self addAction: (self mergeActionClass onMatchSet: setExpression)
+	self onMatch: (CySet of: setExpression)
 ]
 
 { #category : #printing }

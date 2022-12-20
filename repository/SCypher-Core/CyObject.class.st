@@ -86,6 +86,11 @@ CyObject >> >= otherExpression [
 	^self greaterThanOrEquals: otherExpression
 ]
 
+{ #category : #'shortcuts-functions' }
+CyObject >> abs [
+	^ CyFuncInvocation abs: self
+]
+
 { #category : #accessing }
 CyObject >> alias [
 	^ alias
@@ -106,14 +111,29 @@ CyObject >> asCypherObject [
 	^self
 ]
 
+{ #category : #'shortcuts-functions' }
+CyObject >> collect [ 
+	^ CyFuncInvocation collect: self
+]
+
 { #category : #'shortcuts-comparing' }
 CyObject >> contains: otherExpression [
 	^self expressionClass contain: self with: otherExpression
 ]
 
+{ #category : #'shortcuts-functions' }
+CyObject >> count [
+	^ CyFuncInvocation count: self
+]
+
 { #category : #printing }
 CyObject >> cypherString [
 	^String streamContents: [ :str | self printCypherOn: str ]
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> endNode [ 
+	^ CyFuncInvocation endNode: self
 ]
 
 { #category : #'shortcuts-comparing' }
@@ -124,6 +144,11 @@ CyObject >> ends: otherExpression [
 { #category : #'shortcuts-comparing' }
 CyObject >> equals: otherExpression [
 	^self expressionClass eq: self with: otherExpression
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> exists [ 
+	^ CyFuncInvocation exists: self
 ]
 
 { #category : #factory }
@@ -139,6 +164,16 @@ CyObject >> greaterThan: otherExpression [
 { #category : #'shortcuts-comparing' }
 CyObject >> greaterThanOrEquals: otherExpression [
 	^self expressionClass ge: self with: otherExpression
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> head [ 
+	^ CyFuncInvocation head: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> id [ 
+	^ CyFuncInvocation id: self
 ]
 
 { #category : #accessing }
@@ -171,6 +206,26 @@ CyObject >> join: separator in: tokens by: convertSelector [
 	^all
 ]
 
+{ #category : #'shortcuts-functions' }
+CyObject >> keys [ 
+	^ CyFuncInvocation keys: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> labels [ 
+	^ CyFuncInvocation labels: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> last [ 
+	^ CyFuncInvocation last: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> length [
+	^ CyFuncInvocation length: self
+]
+
 { #category : #'shortcuts-comparing' }
 CyObject >> lessThan: otherExpression [
 	^self expressionClass lt: self with: otherExpression
@@ -179,6 +234,26 @@ CyObject >> lessThan: otherExpression [
 { #category : #'shortcuts-comparing' }
 CyObject >> lessThanOrEquals: otherExpression [
 	^self expressionClass le: self with: otherExpression
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> lower [ 
+	^ CyFuncInvocation lower: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> max [ 
+	^ CyFuncInvocation max: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> min [ 
+	^ CyFuncInvocation min: self
+]
+
+{ #category : #'shortcuts-comparing' }
+CyObject >> not [
+	^self expressionClass not: self
 ]
 
 { #category : #'shortcuts-comparing' }
@@ -204,9 +279,54 @@ CyObject >> regex: otherExpression [
 	^self expressionClass regex: self with: otherExpression
 ]
 
+{ #category : #'shortcuts-functions' }
+CyObject >> relationships [ 
+	^ CyFuncInvocation relationships: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> reverse [
+	^ CyFuncInvocation reverse: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> size [
+	^ CyFuncInvocation size: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> startNode [
+	^ CyFuncInvocation startNode: self
+]
+
 { #category : #'shortcuts-comparing' }
 CyObject >> starts: otherExpression [
 	^self expressionClass start: self with: otherExpression
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> sum [
+	^ CyFuncInvocation sum: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> tail [
+	^ CyFuncInvocation tail: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> toFloat [
+	^ CyFuncInvocation toFloat: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> toInt [
+	^ CyFuncInvocation toInt: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> toString [
+	^ CyFuncInvocation toString: self
 ]
 
 { #category : #converting }
@@ -227,6 +347,21 @@ CyObject >> tokensAliasOn: tokens [
 CyObject >> tokensOn: tokens [
 	"override"
 	^tokens
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> trim [
+	^ CyFuncInvocation trim: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> type [
+	^ CyFuncInvocation type: self
+]
+
+{ #category : #'shortcuts-functions' }
+CyObject >> upper [
+	^ CyFuncInvocation upper: self
 ]
 
 { #category : #accessing }

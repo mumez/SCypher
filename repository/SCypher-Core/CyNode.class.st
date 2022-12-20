@@ -20,13 +20,13 @@ CyNode class >> name: nodeName label: label props: propsDict [
 
 { #category : #'instance creation' }
 CyNode class >> name: nodeName labels: labels [
-	^ (self name: nodeName)
-		labels: labels;
-		yourself
+	^ self name: nodeName labels: labels props: nil
 ]
 
 { #category : #'instance creation' }
-CyNode class >> name: nodeName labels: labels props: propsDict [
+CyNode class >> name: nodeName labels: labelOrLabels props: propsDict [
+	| labels |
+	labels := labelOrLabels isArray ifTrue: [ labelOrLabels ] ifFalse: [ Array with: labelOrLabels ].
 	^ (self name: nodeName)
 		labels: labels;
 		props: propsDict;
@@ -122,6 +122,7 @@ CyNode >> props [
 
 { #category : #accessing }
 CyNode >> props: anObject [
+	anObject ifNil: [ ^ props := nil ].
 	props := anObject asDictionary
 ]
 

@@ -67,7 +67,7 @@ CyCypherGenerationTest >> testGenerateMatchWhereReturn [
 	generated := query cypherString. 
 	expected := 'MATCH (n:Movie)
 WHERE (n.title = $name)
-RETURN n ORDER BY n.title SKIP 0 LIMIT $limit '.
+RETURN n ORDER BY n.title SKIP $skip LIMIT $limit '.
 	
 	self assert: generated equals: expected.
 ]

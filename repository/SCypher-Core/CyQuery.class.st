@@ -20,8 +20,9 @@ CyQuery class >> match: match [
 CyQuery class >> match: match where: where [
 	| query |
 	query := self new.
-	query addMatch: match;
-		addWhere: where.
+	query addMatch: match.
+	(where isNil or: [ where isBlock ])
+		ifFalse:[query addWhere: where].
 	^ query
 ]
 
@@ -74,14 +75,18 @@ CyQuery class >> match: match where: where return: return limit: limit [
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return orderBy: orderBy skip: skip limit: limit [
 	^self match: match where: where return: return in: [:r |
-		 r orderBy: orderBy; skip: 0; limit: limit
+		(orderBy isNil or: [orderBy isBlock])
+			ifFalse: [r orderBy: orderBy].
+		skip ifNotNil: [ r skip: skip ].
+		limit ifNotNil: [ r limit: limit ].
 	]
 ]
 
 { #category : #shortcuts }
 CyQuery class >> match: match where: where return: return skip: skip limit: limit [
 	^self match: match where: where return: return in: [:r |
-		 r skip: skip; limit: limit
+		skip ifNotNil: [ r skip: skip ].
+		limit ifNotNil: [ r limit: limit ].
 	]
 ]
 
@@ -134,6 +139,11 @@ CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId mergeIn: aBlock [
 
 { #category : #shortcuts }
 CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder [
+	^ self matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder returnIn: nil
+]
+
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder pathProcessIn: pathProcessBlock returnIn: returnBlock [
 	| s e r p rel endNode path where andWhere |
 	s := 's' asCypherIdentifier.
 	e := 'e' asCypherIdentifier.
@@ -145,7 +155,13 @@ CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPr
 	where := (s getId equals: startNodeId).
 	andWhere := (whereClauseBuilder value: s value: r value: e).
 	andWhere ifNotNil: [ where := where and: andWhere ].
-	^ self match: path where: where return: p.
+	pathProcessBlock ifNotNil: [ p := pathProcessBlock value: p ].
+	^ self match: path where: where return: p in: returnBlock.
+]
+
+{ #category : #shortcuts }
+CyQuery class >> matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder returnIn: returnBlock [
+	^ self matchPathWithRelationshipsOfTypes: typeOrTypes havingAll: relPropsArray fromNodeAt: startNodeId endNodeIn: endNodeBlock pathIn: pathCreationBlock whereIn: whereClauseBuilder pathProcessIn: nil returnIn: returnBlock
 ]
 
 { #category : #'instance creation' }
