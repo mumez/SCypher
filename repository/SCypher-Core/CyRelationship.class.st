@@ -103,6 +103,11 @@ CyRelationship >> <- aCyRelationship [
 	^ aCyRelationship inConnectByRelationship: self
 ]
 
+{ #category : #shortcuts }
+CyRelationship >> @ propName [
+	^self asIdentifier @ propName 
+]
+
 { #category : #converting }
 CyRelationship >> accessor: propName [
 	^CyIdentifier of: self identifier prop: propName
@@ -165,6 +170,11 @@ CyRelationship >> end [
 { #category : #accessing }
 CyRelationship >> end: anObject [
 	end := anObject asCypherObject asNode
+]
+
+{ #category : #shortcuts }
+CyRelationship >> havingAll: assocArray [
+	^self asIdentifier havingAll: assocArray
 ]
 
 { #category : #'dispatching-path pattern' }

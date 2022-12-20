@@ -73,6 +73,11 @@ CyNode >> <-- aCyNode [
 	^ self <- rel - aCyNode 
 ]
 
+{ #category : #shortcuts }
+CyNode >> @ propName [
+	^self asIdentifier @ propName 
+]
+
 { #category : #converting }
 CyNode >> accessor: propName [
 	^CyIdentifier of: self identifier prop: propName
@@ -89,6 +94,11 @@ CyNode >> connectByRelationship: aRelationship [
 	rel := aRelationship copy.
 	rel end: self.
 	^ rel
+]
+
+{ #category : #shortcuts }
+CyNode >> havingAll: assocArray [
+	^self asIdentifier havingAll: assocArray
 ]
 
 { #category : #accessing }

@@ -263,9 +263,29 @@ CyQuery >> addWhere: whereClause [
 	^ self addStatement: (self whereClass of: whereClause)
 ]
 
+{ #category : #actions }
+CyQuery >> create: createClause [
+	self create: createClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> create: createClause in: aBlock [
+	self addCreate: createClause in: aBlock
+]
+
 { #category : #factory }
 CyQuery >> createClass [
 	^ CyCreate
+]
+
+{ #category : #actions }
+CyQuery >> delete: deleteClause [
+	self delete: deleteClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> delete: deleteClause in: aBlock [
+	self addDelete: deleteClause in: aBlock
 ]
 
 { #category : #factory }
@@ -283,9 +303,24 @@ CyQuery >> delimiter: anObject [
 	delimiter := anObject
 ]
 
+{ #category : #actions }
+CyQuery >> match: matchClause [
+	self addMatch: matchClause
+]
+
 { #category : #factory }
 CyQuery >> matchClass [
 	^ CyMatch 
+]
+
+{ #category : #actions }
+CyQuery >> merge: mergeClause [
+	self merge: mergeClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> merge: mergeClause in: aBlock [
+	self addMerge: mergeClause in: aBlock
 ]
 
 { #category : #factory }
@@ -298,14 +333,44 @@ CyQuery >> printString [
 	^self cypherString 
 ]
 
+{ #category : #actions }
+CyQuery >> remove: removeClause [
+	self remove: removeClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> remove: removeClause in: aBlock [
+	self addRemove: removeClause in: aBlock
+]
+
 { #category : #factory }
 CyQuery >> removeClass [
 	^ CyRemove
 ]
 
+{ #category : #actions }
+CyQuery >> return: returnClause [
+	self return: returnClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> return: returnClause in: aBlock [
+	self addReturn: returnClause in: aBlock
+]
+
 { #category : #factory }
 CyQuery >> returnClass [
 	^ CyReturn 
+]
+
+{ #category : #actions }
+CyQuery >> set: setClause [
+	self set: setClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> set: setClause in: aBlock [
+	self addSet: setClause in: aBlock
 ]
 
 { #category : #factory }
@@ -338,6 +403,11 @@ CyQuery >> union: otherCyObject [
 { #category : #union }
 CyQuery >> unionAll: otherCyQuery [
 	^(self union: otherCyQuery) all
+]
+
+{ #category : #actions }
+CyQuery >> where: whereClause [
+	self addWhere: whereClause
 ]
 
 { #category : #factory }
