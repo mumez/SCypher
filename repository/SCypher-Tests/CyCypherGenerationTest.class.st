@@ -20,6 +20,28 @@ RETURN n.title, n.summary ORDER BY n.released SKIP 2 LIMIT 10 '.
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testFluentGenerateRelationshipQuery [
+	| movie person1 person2 movieNode person1Node person2Node path query generated expected |
+	movie := 'm' asCypherIdentifier.
+	person1 := 'p' asCypherIdentifier.
+	person2 := 'p2' asCypherIdentifier.
+	movieNode := CyNode name: movie label: 'Movie' props: {'released'->2000}.
+	person1Node := CyNode name: person1 label: 'Person' props: {}.
+	person2Node := CyNode name: person2 label: 'Person' props: {}.
+	path := person1Node - ('acted_in' asCypherIdentifier rel: 'ACTED_IN') -> movieNode <- ('acted_in2' asCypherIdentifier rel: 'ACTED_IN') - person2Node.
+	query := (CyQuery match: path) return: movie, person1, person2 in: [ :ret |
+		ret orderBy: (movie @ #name), (person1 @ #name) desc, (person2 @ #name) desc; limit: 10 
+	].
+
+	generated := query cypherString.
+	
+	expected := 'MATCH (p:Person)-[`acted_in`:ACTED_IN]->(m:Movie {released:2000})<-[`acted_in2`:ACTED_IN]-(p2:Person)
+RETURN m, p, p2 ORDER BY m.name, p.name DESC, p2.name DESC LIMIT 10 '.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testFluentGenerateWithQuery [
 	| user friend friends query generated expected |
 	user := 'user' asCypherIdentifier.
@@ -61,7 +83,7 @@ RETURN n.title, n.summary ORDER BY n.released SKIP 2 LIMIT 10 '.
 
 { #category : #tests }
 CyCypherGenerationTest >> testGenerateComplexPredicate [
-	| node nameParam predicate generated expected |
+	| node predicate generated expected |
 	node := 'n' asCypherIdentifier.
 	predicate := (((node @ 'name') = 'Peter') xor: ((node @ 'age') < 30 and: (node @ 'name') = 'Timothy')) or: ((node @ 'name') = 'Peter' or: (node @ 'name') = 'Timothy') not.
 	generated := predicate cypherString.
@@ -163,9 +185,9 @@ CyCypherGenerationTest >> testGeneratePredicate [
 { #category : #tests }
 CyCypherGenerationTest >> testGenerateRelationshipQuery [
 	| movie person1 person2 movieNode person1Node person2Node relationshipA relationshipB pattern query generated expected |
-	movie := 'm' asCypherObject.
-	person1 := 'p' asCypherObject.
-	person2 := 'p2' asCypherObject.
+	movie := 'm' asCypherIdentifier.
+	person1 := 'p' asCypherIdentifier.
+	person2 := 'p2' asCypherIdentifier.
 	movieNode := CyNode name: movie label: 'Movie' props: {'released'->2000}.
 	person1Node := CyNode name: person1 label: 'Person' props: {}.
 	person2Node := CyNode name: person2 label: 'Person' props: {}.
@@ -210,9 +232,9 @@ CyCypherGenerationTest >> testGenerateVariablePatterns [
 { #category : #tests }
 CyCypherGenerationTest >> testGenerateWithQuery [
 	| user friend friends query generated expected |
-	user := 'user' asCypherObject.
-	friend := 'friend' asCypherObject.
-	friends := 'friends' asCypherObject.
+	user := 'user' asCypherIdentifier.
+	friend := 'friend' asCypherIdentifier.
+	friends := 'friends' asCypherIdentifier.
 	query := CyQuery statements: { 
 		CyMatch of: (CyRelationship start: user end: friend type: 'FRIEND').
 		CyWhere of: (CyExpression eq: (user prop: 'name') with: 'name' asCypherParameter).

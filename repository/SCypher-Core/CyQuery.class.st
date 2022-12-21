@@ -258,6 +258,19 @@ CyQuery >> addStatement: cypherStatement [
 ]
 
 { #category : #adding }
+CyQuery >> addUnwind: unwindClause [
+	^self addUnwind: unwindClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addUnwind: unwindClause in: aBlock [
+	| unwind |
+	unwind := self unwindClass of: unwindClause.
+	aBlock ifNotNil: [ aBlock value: unwind ].
+	^ self addStatement: unwind
+]
+
+{ #category : #adding }
 CyQuery >> addWhere: whereClause [
 	whereClause ifNil: [ ^ nil ].
 	^ self addStatement: (self whereClass of: whereClause)
@@ -416,6 +429,21 @@ CyQuery >> union: otherCyObject [
 { #category : #union }
 CyQuery >> unionAll: otherCyQuery [
 	^(self union: otherCyQuery) all
+]
+
+{ #category : #actions }
+CyQuery >> unwind: unwindClause [
+	self unwind: unwindClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> unwind: unwindClause in: aBlock [
+	self addUnwind: unwindClause in: aBlock
+]
+
+{ #category : #factory }
+CyQuery >> unwindClass [
+	^ CyUnwind
 ]
 
 { #category : #actions }
