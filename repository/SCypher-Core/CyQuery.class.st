@@ -263,6 +263,19 @@ CyQuery >> addWhere: whereClause [
 	^ self addStatement: (self whereClass of: whereClause)
 ]
 
+{ #category : #adding }
+CyQuery >> addWith: withClause [
+	^self addWith: withClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addWith: withClause in: aBlock [
+	| with |
+	with := self withClass of: withClause.
+	aBlock ifNotNil: [ aBlock value: with ].
+	^ self addStatement: with
+]
+
 { #category : #actions }
 CyQuery >> create: createClause [
 	self create: createClause in: nil
@@ -413,4 +426,19 @@ CyQuery >> where: whereClause [
 { #category : #factory }
 CyQuery >> whereClass [
 	^ CyWhere 
+]
+
+{ #category : #actions }
+CyQuery >> with: withClause [
+	self with: withClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> with: withClause in: aBlock [
+	self addWith: withClause in: aBlock
+]
+
+{ #category : #factory }
+CyQuery >> withClass [
+	^ CyWith
 ]

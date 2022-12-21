@@ -5,6 +5,43 @@ Class {
 }
 
 { #category : #tests }
+CyCypherGenerationTest >> testFluentGenerateBasicQuery [
+	| node query generated expected |
+	node := CyNode name: 'n' label: 'Movie' props: {'released'->2000}.
+	query := (CyQuery match: node) return: (node @ #title), (node @ #summary) in: [ :ret |
+		ret orderBy: (node @ #released); skip: 2; limit: 10 
+	].
+	generated := query cypherString.
+	
+	expected := 'MATCH (n:Movie {released:2000})
+RETURN n.title, n.summary ORDER BY n.released SKIP 2 LIMIT 10 '.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testFluentGenerateWithQuery [
+	| user friend friends query generated expected |
+	user := 'user' asCypherIdentifier.
+	friend := 'friend' asCypherIdentifier.
+	friends := 'friends' asCypherIdentifier.
+	query := (CyQuery match: ((user asNode -- friend asNode) type: 'FRIEND')).
+	query where: (user @ #name = 'name' asCypherParameter);
+		with: (user, (friend count as: friends));
+		where: (friends > 10);
+		return: user.
+	generated := query cypherString.
+	
+	expected := 'MATCH (user)-[:FRIEND]-(friend)
+WHERE (user.name = $name)
+WITH user, count(friend) AS friends 
+WHERE (friends > 10)
+RETURN user '.
+	
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateBasicQuery [
 	| node query generated expected |
 	node := CyNode name: 'n' label: 'Movie' props: {'released'->2000}.
