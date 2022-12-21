@@ -111,6 +111,11 @@ CyObject >> asCypherObject [
 	^self
 ]
 
+{ #category : #converting }
+CyObject >> asIdentifier [
+	^self identifier asCypherIdentifier
+]
+
 { #category : #'shortcuts-functions' }
 CyObject >> collect [ 
 	^ CyFuncInvocation collect: self

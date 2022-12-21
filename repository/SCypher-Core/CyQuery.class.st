@@ -258,14 +258,60 @@ CyQuery >> addStatement: cypherStatement [
 ]
 
 { #category : #adding }
+CyQuery >> addUnwind: unwindClause [
+	^self addUnwind: unwindClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addUnwind: unwindClause in: aBlock [
+	| unwind |
+	unwind := self unwindClass of: unwindClause.
+	aBlock ifNotNil: [ aBlock value: unwind ].
+	^ self addStatement: unwind
+]
+
+{ #category : #adding }
 CyQuery >> addWhere: whereClause [
 	whereClause ifNil: [ ^ nil ].
 	^ self addStatement: (self whereClass of: whereClause)
 ]
 
+{ #category : #adding }
+CyQuery >> addWith: withClause [
+	^self addWith: withClause in: nil
+]
+
+{ #category : #adding }
+CyQuery >> addWith: withClause in: aBlock [
+	| with |
+	with := self withClass of: withClause.
+	aBlock ifNotNil: [ aBlock value: with ].
+	^ self addStatement: with
+]
+
+{ #category : #actions }
+CyQuery >> create: createClause [
+	self create: createClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> create: createClause in: aBlock [
+	self addCreate: createClause in: aBlock
+]
+
 { #category : #factory }
 CyQuery >> createClass [
 	^ CyCreate
+]
+
+{ #category : #actions }
+CyQuery >> delete: deleteClause [
+	self delete: deleteClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> delete: deleteClause in: aBlock [
+	self addDelete: deleteClause in: aBlock
 ]
 
 { #category : #factory }
@@ -283,9 +329,24 @@ CyQuery >> delimiter: anObject [
 	delimiter := anObject
 ]
 
+{ #category : #actions }
+CyQuery >> match: matchClause [
+	self addMatch: matchClause
+]
+
 { #category : #factory }
 CyQuery >> matchClass [
 	^ CyMatch 
+]
+
+{ #category : #actions }
+CyQuery >> merge: mergeClause [
+	self merge: mergeClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> merge: mergeClause in: aBlock [
+	self addMerge: mergeClause in: aBlock
 ]
 
 { #category : #factory }
@@ -298,14 +359,44 @@ CyQuery >> printString [
 	^self cypherString 
 ]
 
+{ #category : #actions }
+CyQuery >> remove: removeClause [
+	self remove: removeClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> remove: removeClause in: aBlock [
+	self addRemove: removeClause in: aBlock
+]
+
 { #category : #factory }
 CyQuery >> removeClass [
 	^ CyRemove
 ]
 
+{ #category : #actions }
+CyQuery >> return: returnClause [
+	self return: returnClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> return: returnClause in: aBlock [
+	self addReturn: returnClause in: aBlock
+]
+
 { #category : #factory }
 CyQuery >> returnClass [
 	^ CyReturn 
+]
+
+{ #category : #actions }
+CyQuery >> set: setClause [
+	self set: setClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> set: setClause in: aBlock [
+	self addSet: setClause in: aBlock
 ]
 
 { #category : #factory }
@@ -340,7 +431,42 @@ CyQuery >> unionAll: otherCyQuery [
 	^(self union: otherCyQuery) all
 ]
 
+{ #category : #actions }
+CyQuery >> unwind: unwindClause [
+	self unwind: unwindClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> unwind: unwindClause in: aBlock [
+	self addUnwind: unwindClause in: aBlock
+]
+
+{ #category : #factory }
+CyQuery >> unwindClass [
+	^ CyUnwind
+]
+
+{ #category : #actions }
+CyQuery >> where: whereClause [
+	self addWhere: whereClause
+]
+
 { #category : #factory }
 CyQuery >> whereClass [
 	^ CyWhere 
+]
+
+{ #category : #actions }
+CyQuery >> with: withClause [
+	self with: withClause in: nil
+]
+
+{ #category : #actions }
+CyQuery >> with: withClause in: aBlock [
+	self addWith: withClause in: aBlock
+]
+
+{ #category : #factory }
+CyQuery >> withClass [
+	^ CyWith
 ]
