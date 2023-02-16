@@ -1,56 +1,67 @@
 Class {
 	#name : #CyIndexSpecifier,
-	#superclass : #CyObject,
+	#superclass : #CyCommandSpecifier,
 	#instVars : [
-		'label',
-		'prop'
+		'type'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
-{ #category : #'instance creation' }
-CyIndexSpecifier class >> label: label prop: prop [
-	^ self new
-		label: label;
-		prop: prop;
-		yourself
+{ #category : #'index-type' }
+CyIndexSpecifier >> fullText [
+	self type: 'FULLTEXT'
 ]
 
-{ #category : #accessing }
-CyIndexSpecifier >> label [
-	^ label
+{ #category : #'index-type' }
+CyIndexSpecifier >> lookUp [
+	self type: 'LOOKUP'
 ]
 
-{ #category : #accessing }
-CyIndexSpecifier >> label: anObject [
-	label := anObject
+{ #category : #'index-type' }
+CyIndexSpecifier >> point [
+	self type: 'POINT'
 ]
 
-{ #category : #accessing }
-CyIndexSpecifier >> prop [
-	^ prop
+{ #category : #'index-type' }
+CyIndexSpecifier >> range [
+	self type: 'RANGE'
 ]
 
-{ #category : #accessing }
-CyIndexSpecifier >> prop: anObject [
-	prop := anObject
-]
-
-{ #category : #printing }
-CyIndexSpecifier >> tokensLabelOn: tokens [
-	self label ifNotNil: [ tokens add: ':', self label cypherLabelString ].
-	
+{ #category : #'index-type' }
+CyIndexSpecifier >> text [
+	self type: 'TEXT'
 ]
 
 { #category : #printing }
 CyIndexSpecifier >> tokensOn: tokens [
-	tokens spacedAdd: 'INDEX ON'.
-	self tokensLabelOn: tokens.
-	self tokensPropertyOn: tokens
+	self tokensTypeOn: tokens.
+	tokens spacedAdd: 'INDEX'.
+	self tokensNameOn: tokens.
+	self tokensIfOn: tokens.
+	self tokensForOn: tokens.
+	self tokensPropsOn: tokens.
 ]
 
 { #category : #printing }
-CyIndexSpecifier >> tokensPropertyOn: tokens [
-	self prop ifNotNil: [ tokens parenEnclosedAdd: self prop cypherString].
-	
+CyIndexSpecifier >> tokensPropsOn: tokens [
+	self props ifNil: [ ^self ].
+	tokens spacedAdd: 'ON'.
+	tokens parenEnclosedAdd: self props cypherString
+]
+
+{ #category : #printing }
+CyIndexSpecifier >> tokensTypeOn: tokens [
+	self type ifNil: [ ^self ].
+	tokens spacedAdd: self type
+]
+
+{ #category : #accessing }
+CyIndexSpecifier >> type [
+	^ type
+]
+
+{ #category : #accessing }
+CyIndexSpecifier >> type: anObject [
+
+	type := anObject
 ]

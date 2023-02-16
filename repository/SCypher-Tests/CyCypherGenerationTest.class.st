@@ -93,6 +93,112 @@ CyCypherGenerationTest >> testGenerateComplexPredicate [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateCreateNodeConstraints [
+	| createConstraint generated expected |
+	
+	createConstraint := (CyCreateConstraint nodeLabeled: 'Label1' prop: 'p1') unique.
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT FOR (n:Label1) REQUIRE n.p1 IS UNIQUE  '.
+	self assert: generated equals: expected.
+
+	createConstraint := (CyCreateConstraint nodeLabeled: 'Label2' prop: 'p2') notNull.
+	createConstraint spec: [:idx |
+		idx name: 'constraint_name'.
+		idx ifNotExists.
+	].
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT constraint_name IF NOT EXISTS FOR (n:Label2) REQUIRE n.p2 IS NOT NULL  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateCreateNodeIndexes [
+	| createIndex generated expected |
+	
+	createIndex := CyCreateIndex nodeLabeled: 'Label1' prop: 'p1'.
+	generated := createIndex cypherString.
+	expected := 'CREATE INDEX FOR (n:Label1) ON (n.p1) '.
+	self assert: generated equals: expected.
+
+	createIndex := CyCreateIndex nodeLabeled: 'Label2' prop: 'p2'.
+	createIndex spec: [:idx |
+		idx name: 'index_name'.
+		idx text; ifNotExists.
+	].
+	generated := createIndex cypherString.
+	expected := 'CREATE TEXT INDEX index_name IF NOT EXISTS FOR (n:Label2) ON (n.p2) '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateCreateRelationshipsConstraints [
+	| createConstraint generated expected |
+	
+	createConstraint := (CyCreateConstraint relationshipTyped:'Type1' prop: 'p1') unique.
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT FOR ()-[r:Type1]-() REQUIRE r.p1 IS UNIQUE  '.
+	self assert: generated equals: expected.
+
+	createConstraint := (CyCreateConstraint relationshipTyped:'Type2' prop: 'p2') notNull.
+	createConstraint spec: [:idx |
+		idx name: 'constraint_name'.
+		idx ifNotExists.
+	].
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT constraint_name IF NOT EXISTS FOR ()-[r:Type2]-() REQUIRE r.p2 IS NOT NULL  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateCreateRelationshipsIndexes [
+	| createIndex generated expected |
+	
+	createIndex := CyCreateIndex relationshipTyped:'Type1' prop: 'p1'.
+	generated := createIndex cypherString.
+	expected := 'CREATE INDEX FOR ()-[r:Type1]-() ON (r.p1) '.
+	self assert: generated equals: expected.
+
+	createIndex := CyCreateIndex relationshipTyped:'Type2' prop: 'p2'.
+	createIndex spec: [:idx |
+		idx name: 'index_name'.
+		idx point; ifNotExists.
+	].
+	generated := createIndex cypherString.
+	expected := 'CREATE POINT INDEX index_name IF NOT EXISTS FOR ()-[r:Type2]-() ON (r.p2) '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateDropConstraints [
+	| dropConstraint generated expected |
+	
+	dropConstraint := CyDropConstraint name: 'index1'.
+	generated := dropConstraint cypherString.
+	expected := 'DROP CONSTRAINT index1  '.
+	self assert: generated equals: expected.
+
+	dropConstraint := CyDropConstraint name: 'index2' dropIfExists: true.
+	generated := dropConstraint cypherString.
+	expected := 'DROP CONSTRAINT index2 IF EXISTS  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateDropIndexes [
+	| dropIndex generated expected |
+	
+	dropIndex := CyDropIndex name: 'index1'.
+	generated := dropIndex cypherString.
+	expected := 'DROP INDEX index1  '.
+	self assert: generated equals: expected.
+
+	dropIndex := CyDropIndex name: 'index2' dropIfExists: true.
+	generated := dropIndex cypherString.
+	expected := 'DROP INDEX index2 IF EXISTS  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateLongPathPatterns [
 	| n1 n2 n3 r1 r2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
 	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
