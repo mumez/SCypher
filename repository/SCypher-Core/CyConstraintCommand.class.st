@@ -4,23 +4,7 @@ Class {
 	#category : 'SCypher-Core'
 }
 
-{ #category : #'instance creation' }
-CyConstraintCommand class >> node: node existsProp: prop [
-	| existenceSpecifier |
-	existenceSpecifier := CyExistenceConstraintSpecifier target: node prop: prop.
-	^ self of: existenceSpecifier
-]
-
-{ #category : #'instance creation' }
-CyConstraintCommand class >> node: node uniqueProp: prop [
-	| uniqueSpecifier |
-	uniqueSpecifier := CyConstraintSpecifier node: node prop: prop.
-	^ self of: uniqueSpecifier
-]
-
-{ #category : #'instance creation' }
-CyConstraintCommand class >> relationshipName: relationshipName type: relationshipType existsProp: prop [
-	| existenceSpecifier |
-	existenceSpecifier := CyExistenceConstraintSpecifier relationshipName: relationshipName type: relationshipType prop: prop.
-	^ self of: existenceSpecifier
+{ #category : #factory }
+CyConstraintCommand class >> specifierClass [
+	^ CyConstraintSpecifier 
 ]

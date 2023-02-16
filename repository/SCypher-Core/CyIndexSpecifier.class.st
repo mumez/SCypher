@@ -1,12 +1,8 @@
 Class {
 	#name : #CyIndexSpecifier,
-	#superclass : #CyObject,
+	#superclass : #CyCommandSpecifier,
 	#instVars : [
-		'name',
-		'type',
-		'ifExpression',
-		'target',
-		'props'
+		'type'
 	],
 	#category : #'SCypher-Core'
 }
@@ -31,43 +27,9 @@ CyIndexSpecifier >> fullText [
 	self type: 'FULLTEXT'
 ]
 
-{ #category : #actions }
-CyIndexSpecifier >> ifExists [
-	self ifExpression: 'EXISTS'
-]
-
-{ #category : #accessing }
-CyIndexSpecifier >> ifExpression [
-
-	^ ifExpression
-]
-
-{ #category : #accessing }
-CyIndexSpecifier >> ifExpression: anObject [
-
-	ifExpression := anObject
-]
-
-{ #category : #actions }
-CyIndexSpecifier >> ifNotExists [
-	self ifExpression: 'NOT EXISTS'
-]
-
 { #category : #'index-type' }
 CyIndexSpecifier >> lookUp [
 	self type: 'LOOKUP'
-]
-
-{ #category : #accessing }
-CyIndexSpecifier >> name [
-
-	^ name
-]
-
-{ #category : #accessing }
-CyIndexSpecifier >> name: anObject [
-
-	name := anObject
 ]
 
 { #category : #'index-type' }
@@ -75,54 +37,14 @@ CyIndexSpecifier >> point [
 	self type: 'POINT'
 ]
 
-{ #category : #accessing }
-CyIndexSpecifier >> props [ 
-	^ props
-]
-
-{ #category : #accessing }
-CyIndexSpecifier >> props: anObject [
-	props := anObject
-]
-
 { #category : #'index-type' }
 CyIndexSpecifier >> range [
 	self type: 'RANGE'
 ]
 
-{ #category : #accessing }
-CyIndexSpecifier >> target [
-	^ target
-]
-
-{ #category : #accessing }
-CyIndexSpecifier >> target: anObject [
-	target := anObject
-]
-
 { #category : #'index-type' }
 CyIndexSpecifier >> text [
 	self type: 'TEXT'
-]
-
-{ #category : #printing }
-CyIndexSpecifier >> tokensForOn: tokens [
-	self target ifNil: [ ^self ].
-	tokens spacedAdd: 'FOR'.
-	tokens spacedAdd: self target cypherString.
-]
-
-{ #category : #printing }
-CyIndexSpecifier >> tokensIfOn: tokens [
-	self ifExpression ifNil: [ ^self ].
-	tokens spacedAdd: 'IF'.
-	tokens spacedAdd: self ifExpression
-]
-
-{ #category : #printing }
-CyIndexSpecifier >> tokensNameOn: tokens [
-	self name ifNil: [ ^self ].
-	tokens spacedAdd: self name
 ]
 
 { #category : #printing }

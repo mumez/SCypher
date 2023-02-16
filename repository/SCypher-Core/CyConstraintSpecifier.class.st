@@ -1,10 +1,7 @@
 Class {
 	#name : #CyConstraintSpecifier,
-	#superclass : #CyObject,
+	#superclass : #CyCommandSpecifier,
 	#instVars : [
-		'name',
-		'ifExpression',
-		'target',
 		'predicate'
 	],
 	#category : #'SCypher-Core'
@@ -12,35 +9,30 @@ Class {
 
 { #category : #'instance creation' }
 CyConstraintSpecifier class >> node: node prop: prop [
-	| inst |
-	inst := self new.
-	inst node: node.
-	inst prop: prop.
-	^inst
+	^ self target: node props: (CyObjects with: prop)
 ]
 
-{ #category : #accessing }
-CyConstraintSpecifier >> ifExpression [
-
-	^ ifExpression
+{ #category : #'instance creation' }
+CyConstraintSpecifier class >> target: nodeOrRelationship props: props [
+	^ self new
+		target: nodeOrRelationship;
+		props: props;
+		yourself
 ]
 
-{ #category : #accessing }
-CyConstraintSpecifier >> ifExpression: anObject [
-
-	ifExpression := anObject
+{ #category : #actions }
+CyConstraintSpecifier >> isKey [
+	self predicate: (CyExpression isKey: self props)
 ]
 
-{ #category : #accessing }
-CyConstraintSpecifier >> name [
-
-	^ name
+{ #category : #actions }
+CyConstraintSpecifier >> isNull [
+	self predicate: (CyExpression isNull: self props)
 ]
 
-{ #category : #accessing }
-CyConstraintSpecifier >> name: anObject [
-
-	name := anObject
+{ #category : #actions }
+CyConstraintSpecifier >> notNull [
+	self predicate: (CyExpression isNotNull: self props)
 ]
 
 { #category : #accessing }
@@ -55,38 +47,6 @@ CyConstraintSpecifier >> predicate: anObject [
 	predicate := anObject
 ]
 
-{ #category : #accessing }
-CyConstraintSpecifier >> target [
-
-	^ target
-]
-
-{ #category : #accessing }
-CyConstraintSpecifier >> target: anObject [
-
-	target := anObject
-]
-
-{ #category : #printing }
-CyConstraintSpecifier >> tokensForOn: tokens [
-	self target ifNil: [ ^self ].
-	tokens spacedAdd: 'FOR'.
-	tokens spacedAdd: self target cypherString.
-]
-
-{ #category : #printing }
-CyConstraintSpecifier >> tokensIfOn: tokens [
-	self ifExpression ifNil: [ ^self ].
-	tokens spacedAdd: 'IF'.
-	tokens spacedAdd: self ifExpression
-]
-
-{ #category : #printing }
-CyConstraintSpecifier >> tokensNameOn: tokens [
-	self name ifNil: [ ^self ].
-	tokens spacedAdd: self name
-]
-
 { #category : #printing }
 CyConstraintSpecifier >> tokensOn: tokens [
 	tokens spacedAdd: 'CONSTRAINT'.
@@ -98,7 +58,13 @@ CyConstraintSpecifier >> tokensOn: tokens [
 
 { #category : #printing }
 CyConstraintSpecifier >> tokensRequireOn: tokens [
+	self predicate ifNil: [ ^self ].
 	tokens spacedAdd: 'REQUIRE'.
-	tokens spacedAdd: self predicate
+	tokens spacedAdd: self predicate cypherString
 	
+]
+
+{ #category : #actions }
+CyConstraintSpecifier >> unique [
+	self predicate: (CyExpression isUnique: self props)
 ]

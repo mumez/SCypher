@@ -93,6 +93,25 @@ CyCypherGenerationTest >> testGenerateComplexPredicate [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateCreateNodeConstraints [
+	| createConstraint generated expected |
+	
+	createConstraint := (CyCreateConstraint nodeLabeled: 'Label1' prop: 'p1') unique.
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT FOR (n:Label1) REQUIRE n.p1 IS UNIQUE  '.
+	self assert: generated equals: expected.
+
+	createConstraint := (CyCreateConstraint nodeLabeled: 'Label2' prop: 'p2') notNull.
+	createConstraint spec: [:idx |
+		idx name: 'constraint_name'.
+		idx ifNotExists.
+	].
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT constraint_name IF NOT EXISTS FOR (n:Label2) REQUIRE n.p2 IS NOT NULL  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateCreateNodeIndexes [
 	| createIndex generated expected |
 	
@@ -112,6 +131,25 @@ CyCypherGenerationTest >> testGenerateCreateNodeIndexes [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateCreateRelationshipsConstraints [
+	| createConstraint generated expected |
+	
+	createConstraint := (CyCreateConstraint relationshipTyped:'Type1' prop: 'p1') unique.
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT FOR ()-[r:Type1]-() REQUIRE r.p1 IS UNIQUE  '.
+	self assert: generated equals: expected.
+
+	createConstraint := (CyCreateConstraint relationshipTyped:'Type2' prop: 'p2') notNull.
+	createConstraint spec: [:idx |
+		idx name: 'constraint_name'.
+		idx ifNotExists.
+	].
+	generated := createConstraint cypherString.
+	expected := 'CREATE CONSTRAINT constraint_name IF NOT EXISTS FOR ()-[r:Type2]-() REQUIRE r.p2 IS NOT NULL  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateCreateRelationshipsIndexes [
 	| createIndex generated expected |
 	
@@ -127,6 +165,21 @@ CyCypherGenerationTest >> testGenerateCreateRelationshipsIndexes [
 	].
 	generated := createIndex cypherString.
 	expected := 'CREATE POINT INDEX index_name IF NOT EXISTS FOR ()-[r:Type2]-() ON (r.p2) '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateDropConstraints [
+	| dropConstraint generated expected |
+	
+	dropConstraint := CyDropConstraint name: 'index1'.
+	generated := dropConstraint cypherString.
+	expected := 'DROP CONSTRAINT index1  '.
+	self assert: generated equals: expected.
+
+	dropConstraint := CyDropConstraint name: 'index2' dropIfExists: true.
+	generated := dropConstraint cypherString.
+	expected := 'DROP CONSTRAINT index2 IF EXISTS  '.
 	self assert: generated equals: expected.
 ]
 
