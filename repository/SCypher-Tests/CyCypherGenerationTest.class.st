@@ -131,6 +131,21 @@ CyCypherGenerationTest >> testGenerateCreateRelationshipsIndexes [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateDropIndexes [
+	| dropIndex generated expected |
+	
+	dropIndex := CyDropIndex name: 'index1'.
+	generated := dropIndex cypherString.
+	expected := 'DROP INDEX index1  '.
+	self assert: generated equals: expected.
+
+	dropIndex := CyDropIndex name: 'index2' dropIfExists: true.
+	generated := dropIndex cypherString.
+	expected := 'DROP INDEX index2 IF EXISTS  '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateLongPathPatterns [
 	| n1 n2 n3 r1 r2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
 	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
