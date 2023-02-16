@@ -6,7 +6,7 @@ Class {
 		'prop',
 		'isForRelationship'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -54,19 +54,20 @@ CyExistenceConstraintSpecifier >> target: anObject [
 ]
 
 { #category : #printing }
-CyExistenceConstraintSpecifier >> tokensAssertionOn: tokens [
-	tokens spacedAdd: 'ASSERT'.
+CyExistenceConstraintSpecifier >> tokensOn: tokens [
+	tokens spacedAdd: 'CONSTRAINT'.
+	self tokensTargetOn: tokens.
+	self tokensRequireOn: tokens
+]
+
+{ #category : #printing }
+CyExistenceConstraintSpecifier >> tokensRequireOn: tokens [
+	tokens spacedAdd: 'REQUIRE'.
 	tokens add: (CyFuncInvocation exists: (self target accessor: self prop)) cypherString.
 ]
 
 { #category : #printing }
-CyExistenceConstraintSpecifier >> tokensOn: tokens [
-	tokens spacedAdd: 'CONSTRAINT ON'.
-	self tokensTargetOn: tokens.
-	self tokensAssertionOn: tokens
-]
-
-{ #category : #printing }
 CyExistenceConstraintSpecifier >> tokensTargetOn: tokens [
+	tokens spacedAdd: 'FOR'.
 	tokens spacedAdd: self target cypherString
 ]

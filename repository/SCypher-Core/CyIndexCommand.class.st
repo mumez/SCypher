@@ -5,8 +5,16 @@ Class {
 }
 
 { #category : #'instance creation' }
-CyIndexCommand class >> label: label prop: prop [
+CyIndexCommand class >> label: nodeLabel prop: prop [
+	| node |
+	node := 'n' asCypherIdentifier node: {nodeLabel}.
+	^ self target: node props: (CyObjects with: node @ prop).
+	
+]
+
+{ #category : #'instance creation' }
+CyIndexCommand class >> target: nodeOrRelationship props: props [
 	| indexSpecifier |
-	indexSpecifier := CyIndexSpecifier label: label prop: prop.
+	indexSpecifier := CyIndexSpecifier target: nodeOrRelationship props: props.
 	^ self of: indexSpecifier
 ]

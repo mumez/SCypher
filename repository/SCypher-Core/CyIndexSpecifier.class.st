@@ -2,55 +2,52 @@ Class {
 	#name : #CyIndexSpecifier,
 	#superclass : #CyObject,
 	#instVars : [
-		'label',
-		'prop'
+		'target',
+		'props'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
-CyIndexSpecifier class >> label: label prop: prop [
+CyIndexSpecifier class >> target: nodeOrRelationship props: props [
 	^ self new
-		label: label;
-		prop: prop;
+		target: nodeOrRelationship;
+		props: props;
 		yourself
 ]
 
 { #category : #accessing }
-CyIndexSpecifier >> label [
-	^ label
+CyIndexSpecifier >> props [ 
+	^ props
 ]
 
 { #category : #accessing }
-CyIndexSpecifier >> label: anObject [
-	label := anObject
+CyIndexSpecifier >> props: anObject [
+	props := anObject
 ]
 
 { #category : #accessing }
-CyIndexSpecifier >> prop [
-	^ prop
+CyIndexSpecifier >> target [
+	^ target
 ]
 
 { #category : #accessing }
-CyIndexSpecifier >> prop: anObject [
-	prop := anObject
-]
-
-{ #category : #printing }
-CyIndexSpecifier >> tokensLabelOn: tokens [
-	self label ifNotNil: [ tokens add: ':', self label cypherLabelString ].
-	
+CyIndexSpecifier >> target: anObject [
+	target := anObject
 ]
 
 { #category : #printing }
 CyIndexSpecifier >> tokensOn: tokens [
-	tokens spacedAdd: 'INDEX ON'.
-	self tokensLabelOn: tokens.
-	self tokensPropertyOn: tokens
+	tokens add: 'INDEX'.
+	
+	tokens spacedAdd: 'FOR'.
+	tokens spacedAdd: self target cypherString.
+	
+	tokens spacedAdd: 'ON'.
+	self tokensPropsOn: tokens.
 ]
 
 { #category : #printing }
-CyIndexSpecifier >> tokensPropertyOn: tokens [
-	self prop ifNotNil: [ tokens parenEnclosedAdd: self prop cypherString].
-	
+CyIndexSpecifier >> tokensPropsOn: tokens [
+	tokens parenEnclosedAdd: self props cypherString
 ]

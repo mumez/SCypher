@@ -5,7 +5,7 @@ Class {
 		'node',
 		'prop'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #'instance creation' }
@@ -38,21 +38,22 @@ CyUniqueConstraintSpecifier >> prop: anObject [
 ]
 
 { #category : #printing }
-CyUniqueConstraintSpecifier >> tokensAssertionOn: tokens [
-	tokens spacedAdd: 'ASSERT'.
+CyUniqueConstraintSpecifier >> tokensOn: tokens [
+	tokens spacedAdd: 'CONSTRAINT'.
+	self tokensTargetOn: tokens.
+	self tokensRequireOn: tokens
+]
+
+{ #category : #printing }
+CyUniqueConstraintSpecifier >> tokensRequireOn: tokens [
+	tokens spacedAdd: 'REQUIRE'.
 	tokens add: (self node accessor: self prop) cypherString.
 	tokens spacedAdd: 'IS UNIQUE'.
 	
 ]
 
 { #category : #printing }
-CyUniqueConstraintSpecifier >> tokensOn: tokens [
-	tokens spacedAdd: 'CONSTRAINT ON'.
-	self tokensTargetOn: tokens.
-	self tokensAssertionOn: tokens
-]
-
-{ #category : #printing }
 CyUniqueConstraintSpecifier >> tokensTargetOn: tokens [
+	tokens spacedAdd: 'FOR'.
 	tokens spacedAdd: self node cypherString
 ]
