@@ -17,6 +17,14 @@ CyCommandSpecifier class >> name: indexName [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+CyCommandSpecifier class >> target: nodeOrRelationship props: props [
+	^ self new
+		target: nodeOrRelationship;
+		props: props;
+		yourself
+]
+
 { #category : #actions }
 CyCommandSpecifier >> ifExists [
 	self ifExpression: 'EXISTS'

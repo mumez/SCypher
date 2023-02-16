@@ -7,21 +7,6 @@ Class {
 	#category : #'SCypher-Core'
 }
 
-{ #category : #'instance creation' }
-CyIndexSpecifier class >> name: indexName [
-	^ self new
-		name: indexName;
-		yourself
-]
-
-{ #category : #'instance creation' }
-CyIndexSpecifier class >> target: nodeOrRelationship props: props [
-	^ self new
-		target: nodeOrRelationship;
-		props: props;
-		yourself
-]
-
 { #category : #'index-type' }
 CyIndexSpecifier >> fullText [
 	self type: 'FULLTEXT'

@@ -7,19 +7,6 @@ Class {
 	#category : #'SCypher-Core'
 }
 
-{ #category : #'instance creation' }
-CyConstraintSpecifier class >> node: node prop: prop [
-	^ self target: node props: (CyObjects with: prop)
-]
-
-{ #category : #'instance creation' }
-CyConstraintSpecifier class >> target: nodeOrRelationship props: props [
-	^ self new
-		target: nodeOrRelationship;
-		props: props;
-		yourself
-]
-
 { #category : #actions }
 CyConstraintSpecifier >> isKey [
 	self predicate: (CyExpression isKey: self props)
