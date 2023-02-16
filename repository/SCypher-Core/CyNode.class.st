@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+CyNode class >> empty [
+	^self identifier: ''
+]
+
+{ #category : #'instance creation' }
 CyNode class >> name: nodeName label: label [
 	^self name: nodeName labels: { label }
 ]

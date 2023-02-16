@@ -15,7 +15,7 @@ CyIndexCommand class >> nodeLabeled: nodeLabel prop: prop [
 { #category : #'instance creation' }
 CyIndexCommand class >> relationshipTyped: relationshipType prop: prop [
 	| node |
-	node := 'r' asCypherIdentifier rel: {relationshipType}.
+	node := (CyNode empty) - ('r' asCypherIdentifier rel: {relationshipType}) - (CyNode empty).
 	^ self target: node props: (CyObjects with: node @ prop).
 	
 ]
