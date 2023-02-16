@@ -56,6 +56,11 @@ CyExpression class >> gt: expA with: expB [
 ]
 
 { #category : #'instance creation-shortcuts' }
+CyExpression class >> isKey: expA [
+	^self type: #postfix operator: 'IS KEY' expressions: {expA}
+]
+
+{ #category : #'instance creation-shortcuts' }
 CyExpression class >> isNotNull: expA [
 	^self type: #postfix operator: 'IS NOT NULL' expressions: {expA}
 ]
@@ -63,6 +68,11 @@ CyExpression class >> isNotNull: expA [
 { #category : #'instance creation-shortcuts' }
 CyExpression class >> isNull: expA [
 	^self type: #postfix operator: 'IS NULL' expressions: {expA}
+]
+
+{ #category : #'instance creation-shortcuts' }
+CyExpression class >> isUnique: expA [
+	^self type: #postfix operator: 'IS UNIQUE' expressions: {expA}
 ]
 
 { #category : #'instance creation-comparison' }
@@ -351,7 +361,7 @@ CyExpression >> tokensOn: tokens [
 CyExpression >> tokensPostfixTypeOn: tokens [
 	tokens add: self expressions cypherValueString.
 	tokens space.
-	tokens add: self operator cypherValueString.
+	tokens add: self operator.
 	
 ]
 

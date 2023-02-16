@@ -14,7 +14,7 @@ CyConstraintCommand class >> node: node existsProp: prop [
 { #category : #'instance creation' }
 CyConstraintCommand class >> node: node uniqueProp: prop [
 	| uniqueSpecifier |
-	uniqueSpecifier := CyUniqueConstraintSpecifier node: node prop: prop.
+	uniqueSpecifier := CyConstraintSpecifier node: node prop: prop.
 	^ self of: uniqueSpecifier
 ]
 
