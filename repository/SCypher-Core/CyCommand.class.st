@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'commandName'
 	],
-	#category : 'SCypher-Core'
+	#category : #'SCypher-Core'
 }
 
 { #category : #accessing }
@@ -22,8 +22,18 @@ CyCommand >> defaultCommandName [
 	^''
 ]
 
+{ #category : #actions }
+CyCommand >> spec: aBlock [
+	aBlock value: self value
+]
+
+{ #category : #accessing }
+CyCommand >> specifier [
+	^ self value
+]
+
 { #category : #printing }
 CyCommand >> tokensOn: tokens [
-	tokens add: self commandName; space.
-	tokens add: (self value cypherTokenString)
+	tokens add: self commandName.
+	tokens spacedAdd: (self value cypherTokenString)
 ]

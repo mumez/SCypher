@@ -5,9 +5,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-CyIndexCommand class >> label: nodeLabel prop: prop [
+CyIndexCommand class >> nodeLabeled: nodeLabel prop: prop [
 	| node |
 	node := 'n' asCypherIdentifier node: {nodeLabel}.
+	^ self target: node props: (CyObjects with: node @ prop).
+	
+]
+
+{ #category : #'instance creation' }
+CyIndexCommand class >> relationshipTyped: relationshipType prop: prop [
+	| node |
+	node := 'r' asCypherIdentifier rel: {relationshipType}.
 	^ self target: node props: (CyObjects with: node @ prop).
 	
 ]
