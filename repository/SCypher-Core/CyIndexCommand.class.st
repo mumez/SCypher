@@ -4,9 +4,7 @@ Class {
 	#category : 'SCypher-Core'
 }
 
-{ #category : #'instance creation' }
-CyIndexCommand class >> label: label prop: prop [
-	| indexSpecifier |
-	indexSpecifier := CyIndexSpecifier label: label prop: prop.
-	^ self of: indexSpecifier
+{ #category : #factory }
+CyIndexCommand class >> specifierClass [
+	^ CyIndexSpecifier 
 ]
