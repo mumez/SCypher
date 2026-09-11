@@ -238,6 +238,25 @@ RETURN n ORDER BY n.title SKIP $skip LIMIT $limit '.
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateNodeLabelExpressions [
+	| orNode notNode andNode notOrNode legacyNode |
+	orNode := CyNode name: 'n' label: ('Movie' asCypherLabel | 'Person' asCypherLabel).
+	self assert: orNode cypherString equals: '(n:Movie|Person)'.
+
+	notNode := CyNode name: 'n' label: 'Movie' asCypherLabel not.
+	self assert: notNode cypherString equals: '(n:!Movie)'.
+
+	andNode := CyNode name: 'n' label: ('Movie' asCypherLabel & 'Person' asCypherLabel).
+	self assert: andNode cypherString equals: '(n:Movie&Person)'.
+
+	notOrNode := CyNode name: 'n' label: ('Movie' asCypherLabel not | 'Person' asCypherLabel).
+	self assert: notOrNode cypherString equals: '(n:(!Movie)|Person)'.
+
+	legacyNode := CyNode name: 'n' labels: {'Movie'. 'Person'}.
+	self assert: legacyNode cypherString equals: '(n:Movie:Person)'.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateNodesOnlyPathPatterns [
 	| n1 n2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
 	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).

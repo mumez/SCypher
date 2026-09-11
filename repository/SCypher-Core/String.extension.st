@@ -1,6 +1,11 @@
 Extension { #name : #String }
 
 { #category : #'*SCypher-Core-converting' }
+String >> asCypherLabel [
+	^CyLabel label: self
+]
+
+{ #category : #'*SCypher-Core-converting' }
 String >> asCypherObject [
 	^CyIdentifier of: self
 ]
@@ -27,7 +32,7 @@ String >> cypherIdentifierString [
 
 { #category : #'*SCypher-Core-printing' }
 String >> cypherLabelString [
-	^ self
+	^ self cypherIdentifierString
 ]
 
 { #category : #'*SCypher-Core-printing' }
