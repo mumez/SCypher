@@ -257,6 +257,19 @@ CyCypherGenerationTest >> testGenerateNodeLabelExpressions [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateNestedLabelExpressions [
+	| orOfAndNode andOfOrAndNotNode notOfOrNode |
+	orOfAndNode := CyNode name: 'n' label: ('Movie' asCypherLabel | ('Person' asCypherLabel & 'Actor' asCypherLabel)).
+	self assert: orOfAndNode cypherString equals: '(n:Movie|(Person&Actor))'.
+
+	andOfOrAndNotNode := CyNode name: 'n' label: (('Person' asCypherLabel | 'User' asCypherLabel) & 'Active' asCypherLabel not).
+	self assert: andOfOrAndNotNode cypherString equals: '(n:(Person|User)&(!Active))'.
+
+	notOfOrNode := CyNode name: 'n' label: (('Movie' asCypherLabel | 'Person' asCypherLabel) not & 'Actor' asCypherLabel).
+	self assert: notOfOrNode cypherString equals: '(n:(!(Movie|Person))&Actor)'.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateNodesOnlyPathPatterns [
 	| n1 n2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
 	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
