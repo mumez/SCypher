@@ -1,0 +1,13 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'SCypher',
+      #directory : 'repository',
+      #load : ['Tests'],
+      #onConflict : #useLoaded,
+      #useLatestMetacello : false,
+      #onWarningLog : true,
+      #platforms : [ #pharo ]
+    }
+  ]
+}
