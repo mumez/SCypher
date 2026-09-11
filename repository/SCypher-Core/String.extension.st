@@ -32,6 +32,7 @@ String >> cypherIdentifierString [
 
 { #category : #'*SCypher-Core-printing' }
 String >> cypherLabelString [
+	self = '%' ifTrue: [ ^self ].
 	^ self cypherIdentifierString
 ]
 

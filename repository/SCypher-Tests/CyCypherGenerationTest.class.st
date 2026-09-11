@@ -257,6 +257,16 @@ CyCypherGenerationTest >> testGenerateNodeLabelExpressions [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateWildcardLabelExpressions [
+	| anyNode andWithAnyNode |
+	anyNode := CyNode name: 'n' label: CyLabel any.
+	self assert: anyNode cypherString equals: '(n:%)'.
+
+	andWithAnyNode := CyNode name: 'n' label: ('Movie' asCypherLabel & CyLabel any).
+	self assert: andWithAnyNode cypherString equals: '(n:Movie&%)'.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateNestedLabelExpressions [
 	| orOfAndNode andOfOrAndNotNode notOfOrNode |
 	orOfAndNode := CyNode name: 'n' label: ('Movie' asCypherLabel | ('Person' asCypherLabel & 'Actor' asCypherLabel)).
