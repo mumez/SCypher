@@ -147,7 +147,7 @@ CyNode >> tokensLabelOn: tokens [
 	lbls := self labels.
 	lbls isEmptyOrNil ifTrue: [ ^self ].
 	
-	tokens add: ':'; addAll: (self join: ':' in: lbls) 
+	tokens add: ':'; addAll: (self join: ':' in: lbls by: #cypherLabelString)
 ]
 
 { #category : #printing }
