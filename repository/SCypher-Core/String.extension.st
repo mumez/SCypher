@@ -26,7 +26,7 @@ String >> cypherIdentifierString [
 	firstChar := self first.
 	(firstChar isLetter or: [ firstChar = $_ ]) ifFalse: [ ^self backQuotesEscapedEnclosed  ].
 	
-	2 to: self size do: [:idx| (self at: idx) isAlphaNumeric ifFalse: [^self backQuotesEscapedEnclosed]].
+	2 to: self size do: [:idx| | ch | ch := self at: idx. (ch isAlphaNumeric or: [ ch = $_ ]) ifFalse: [^self backQuotesEscapedEnclosed]].
 	^ self
 ]
 
