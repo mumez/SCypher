@@ -1,0 +1,13 @@
+# Mac
+.DS_Store
+
+# AI
+.superpowers/
+.agent/
+.agents/
+.claude/
+.cursor/
+.opencode/
+.antigravitycli/
+CLAUDE.local.md
+.worktrees/
