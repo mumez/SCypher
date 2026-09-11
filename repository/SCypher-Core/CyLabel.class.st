@@ -14,6 +14,11 @@ CyLabel class >> and: labelA with: labelB [
 	^self type: #infix operator: '&' expressions: {labelA. labelB}
 ]
 
+{ #category : #'instance creation-shortcuts' }
+CyLabel class >> any [
+	^self label: '%'
+]
+
 { #category : #'instance creation' }
 CyLabel class >> label: aLabelName [
 	^self type: #leaf operator: nil expressions: {aLabelName}

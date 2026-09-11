@@ -330,9 +330,9 @@ CyRelationship >> tokensStartPartEdgeOn: tokens [
 { #category : #printing }
 CyRelationship >> tokensTypesOn: tokens [
 	self types ifNil: [ ^self ].
-	self types ifNotEmpty: [ 
+	self types ifNotEmpty: [
 		tokens add: ':' .
-		self types do: [:each | tokens add: each ] separatedBy: [ tokens add: '|' ].
+		self types do: [:each | tokens add: each cypherLabelString ] separatedBy: [ tokens add: '|' ].
 	].
 ]
 

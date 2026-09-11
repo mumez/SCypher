@@ -35,9 +35,9 @@ CyCypherGenerationTest >> testFluentGenerateRelationshipQuery [
 
 	generated := query cypherString.
 	
-	expected := 'MATCH (p:Person)-[`acted_in`:ACTED_IN]->(m:Movie {released:2000})<-[`acted_in2`:ACTED_IN]-(p2:Person)
+	expected := 'MATCH (p:Person)-[acted_in:ACTED_IN]->(m:Movie {released:2000})<-[acted_in2:ACTED_IN]-(p2:Person)
 RETURN m, p, p2 ORDER BY m.name, p.name DESC, p2.name DESC LIMIT 10 '.
-	
+
 	self assert: generated equals: expected.
 ]
 
@@ -257,6 +257,43 @@ CyCypherGenerationTest >> testGenerateNodeLabelExpressions [
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateRelationshipTypeLabelExpressions [
+	| a b rel query generated expected |
+	a := 'a' asCypherIdentifier asNode.
+	b := 'b' asCypherIdentifier asNode.
+	rel := (CyRelationship start: a end: b name: 'r' type: (('FRIEND' asCypherLabel | 'FOLLOWS' asCypherLabel) & 'BLOCKED' asCypherLabel not)) beOut.
+	query := CyQuery statements: { CyMatch of: rel. CyReturn of: 'r' asCypherIdentifier }.
+	generated := query cypherString.
+
+	expected := 'MATCH (a)-[r:(FRIEND|FOLLOWS)&(!BLOCKED)]->(b)
+RETURN r '.
+	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateWildcardLabelExpressions [
+	| anyNode andWithAnyNode |
+	anyNode := CyNode name: 'n' label: CyLabel any.
+	self assert: anyNode cypherString equals: '(n:%)'.
+
+	andWithAnyNode := CyNode name: 'n' label: ('Movie' asCypherLabel & CyLabel any).
+	self assert: andWithAnyNode cypherString equals: '(n:Movie&%)'.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateNestedLabelExpressions [
+	| orOfAndNode andOfOrAndNotNode notOfOrNode |
+	orOfAndNode := CyNode name: 'n' label: ('Movie' asCypherLabel | ('Person' asCypherLabel & 'Actor' asCypherLabel)).
+	self assert: orOfAndNode cypherString equals: '(n:Movie|(Person&Actor))'.
+
+	andOfOrAndNotNode := CyNode name: 'n' label: (('Person' asCypherLabel | 'User' asCypherLabel) & 'Active' asCypherLabel not).
+	self assert: andOfOrAndNotNode cypherString equals: '(n:(Person|User)&(!Active))'.
+
+	notOfOrNode := CyNode name: 'n' label: (('Movie' asCypherLabel | 'Person' asCypherLabel) not & 'Actor' asCypherLabel).
+	self assert: notOfOrNode cypherString equals: '(n:(!(Movie|Person))&Actor)'.
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateNodesOnlyPathPatterns [
 	| n1 n2 pattern1 expected1 pattern2 expected2 pattern3 expected3 |
 	n1 := ('a' asCypherIdentifier node: 'Label1' props: {'aa'->1.'bb'->'BB'}).
@@ -326,9 +363,9 @@ CyCypherGenerationTest >> testGenerateRelationshipQuery [
 
 	generated := query cypherString.
 	
-	expected := 'MATCH (p:Person)-[`acted_in`:ACTED_IN]->(m:Movie {released:2000})<-[`acted_in2`:ACTED_IN]-(p2:Person)
+	expected := 'MATCH (p:Person)-[acted_in:ACTED_IN]->(m:Movie {released:2000})<-[acted_in2:ACTED_IN]-(p2:Person)
 RETURN m, p, p2 ORDER BY m.name, p.name DESC, p2.name DESC LIMIT 10 '.
-	
+
 	self assert: generated equals: expected.
 ]
 
