@@ -238,6 +238,40 @@ RETURN n ORDER BY n.title SKIP $skip LIMIT $limit '.
 ]
 
 { #category : #tests }
+CyCypherGenerationTest >> testGenerateMatchPathWithNodeAtNodeAtCreate [
+	| query generated expected |
+	query := CyQuery matchPathWithNodeAt: 1 nodeAt: 2 createIn: [ :startNode :endNode :relIdentifier |
+		startNode - (relIdentifier rel: 'KNOWS' props: { 'since' -> 2020 }) -> endNode ].
+
+	generated := query cypherString.
+	expected := 'MATCH (a)
+WHERE id(a) = 1
+MATCH (b)
+WHERE id(b) = 2
+CREATE p = (a)-[r:KNOWS {since:2020}]->(b)
+RETURN p '.
+
+	self assert: generated equals: expected
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateMatchPathWithNodeAtNodeAtMerge [
+	| query generated expected |
+	query := CyQuery matchPathWithNodeAt: 1 nodeAt: 2 mergeIn: [ :startNode :endNode :relIdentifier |
+		startNode <- (relIdentifier rel: 'KNOWS' props: {}) - endNode ].
+
+	generated := query cypherString.
+	expected := 'MATCH (a)
+WHERE id(a) = 1
+MATCH (b)
+WHERE id(b) = 2
+MERGE p = (a)<-[r:KNOWS]-(b)
+RETURN p '.
+
+	self assert: generated equals: expected
+]
+
+{ #category : #tests }
 CyCypherGenerationTest >> testGenerateNodeLabelExpressions [
 	| orNode notNode andNode notOrNode legacyNode |
 	orNode := CyNode name: 'n' label: ('Movie' asCypherLabel | 'Person' asCypherLabel).
