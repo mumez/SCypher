@@ -17,6 +17,11 @@ CyRawExpression >> bePlain [
 	self enclosed: false
 ]
 
+{ #category : #converting }
+CyRawExpression >> withoutOutermostParentheses [
+	^ self copy bePlain; yourself
+]
+
 { #category : #accessing }
 CyRawExpression >> enclosed [
 	^enclosed ifNil: [ enclosed := true ]

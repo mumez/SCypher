@@ -112,8 +112,8 @@ CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId createIn: aBlock [
 	p := 'p' asCypherIdentifier.
 	nodeA := a asNode.
 	nodeB := b asNode.
-	query := self match: nodeA where: (a getId = nodeAId) bePlain.
-	query addMatch: nodeB; addWhere: (b getId = nodeBId) bePlain.
+	query := self match: nodeA where: a getId = nodeAId.
+	query addMatch: nodeB; addWhere: b getId = nodeBId.
 	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
 	query addCreate: pattern.
 	query addReturn: p.
@@ -129,8 +129,8 @@ CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId mergeIn: aBlock [
 	p := 'p' asCypherIdentifier.
 	nodeA := a asNode.
 	nodeB := b asNode.
-	query := self match: nodeA where: (a getId = nodeAId) bePlain.
-	query addMatch: nodeB; addWhere: (b getId = nodeBId) bePlain.
+	query := self match: nodeA where: a getId = nodeAId.
+	query addMatch: nodeB; addWhere: b getId = nodeBId.
 	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
 	query addMerge: pattern.
 	query addReturn: p.

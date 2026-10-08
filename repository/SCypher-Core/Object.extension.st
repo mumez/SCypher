@@ -39,3 +39,8 @@ Object >> cypherValueString [
 Object >> isCyObject [
 	^false
 ]
+
+{ #category : #'*SCypher-Core-converting' }
+Object >> withoutOutermostParentheses [
+	^ self
+]
