@@ -55,9 +55,9 @@ CyCypherGenerationTest >> testFluentGenerateWithQuery [
 	generated := query cypherString.
 	
 	expected := 'MATCH (user)-[:FRIEND]-(friend)
-WHERE (user.name = $name)
+WHERE user.name = $name
 WITH user, count(friend) AS friends 
-WHERE (friends > 10)
+WHERE friends > 10
 RETURN user '.
 	
 	self assert: generated equals: expected.
@@ -231,10 +231,78 @@ CyCypherGenerationTest >> testGenerateMatchWhereReturn [
 	
 	generated := query cypherString. 
 	expected := 'MATCH (n:Movie)
-WHERE (n.title = $name)
+WHERE n.title = $name
 RETURN n ORDER BY n.title SKIP $skip LIMIT $limit '.
 	
 	self assert: generated equals: expected.
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateMatchPathWithNodeAtNodeAtCreate [
+	| query generated expected |
+	query := CyQuery matchPathWithNodeAt: 1 nodeAt: 2 createIn: [ :startNode :endNode :relIdentifier |
+		startNode - (relIdentifier rel: 'KNOWS' props: { 'since' -> 2020 }) -> endNode ].
+
+	generated := query cypherString.
+	expected := 'MATCH (a)
+WHERE id(a) = 1
+MATCH (b)
+WHERE id(b) = 2
+CREATE p = (a)-[r:KNOWS {since:2020}]->(b)
+RETURN p '.
+
+	self assert: generated equals: expected
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateMatchPathWithNodeAtNodeAtMerge [
+	| query generated expected |
+	query := CyQuery matchPathWithNodeAt: 1 nodeAt: 2 mergeIn: [ :startNode :endNode :relIdentifier |
+		startNode <- (relIdentifier rel: 'KNOWS' props: {}) - endNode ].
+
+	generated := query cypherString.
+	expected := 'MATCH (a)
+WHERE id(a) = 1
+MATCH (b)
+WHERE id(b) = 2
+MERGE p = (a)<-[r:KNOWS]-(b)
+RETURN p '.
+
+	self assert: generated equals: expected
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateWhereKeepsNestedParentheses [
+	| node query generated expected |
+	node := 'n' asCypherIdentifier.
+	query := CyQuery match: node asNode
+		where: ((((node @ 'x') = 1) or: ((node @ 'y') = 2)) and: ((node @ 'z') = 3))
+		return: node.
+
+	generated := query cypherString.
+	expected := 'MATCH (n)
+WHERE ((n.x = 1) OR (n.y = 2)) AND (n.z = 3)
+RETURN n '.
+
+	self assert: generated equals: expected
+]
+
+{ #category : #tests }
+CyCypherGenerationTest >> testGenerateWhereLeavesGivenExpressionEnclosed [
+	| node predicate query generated expected |
+	node := 'n' asCypherIdentifier.
+	predicate := ((node @ 'x') = 1) or: ((node @ 'y') = 2).
+	query := CyQuery match: node asNode
+		where: predicate
+		return: (predicate and: ((node @ 'z') = 3)).
+
+	generated := query cypherString.
+	expected := 'MATCH (n)
+WHERE (n.x = 1) OR (n.y = 2)
+RETURN (((n.x = 1) OR (n.y = 2)) AND (n.z = 3)) '.
+
+	self assert: generated equals: expected.
+	self assert: predicate cypherString equals: '((n.x = 1) OR (n.y = 2))'
 ]
 
 { #category : #tests }
@@ -407,9 +475,9 @@ CyCypherGenerationTest >> testGenerateWithQuery [
 	generated := query cypherString.
 	
 	expected := 'MATCH (user)-[:FRIEND]-(friend)
-WHERE (user.name = $name)
+WHERE user.name = $name
 WITH user, count(friend) AS friends 
-WHERE (friends > 10)
+WHERE friends > 10
 RETURN user '.
 	
 	self assert: generated equals: expected.

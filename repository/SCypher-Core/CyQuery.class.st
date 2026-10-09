@@ -105,15 +105,15 @@ CyQuery class >> match: match where: where set: set in: setBlock [
 
 { #category : #shortcuts }
 CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId createIn: aBlock [ 
-	| a b r p nodeA nodeB where query pattern |
+	| a b r p nodeA nodeB query pattern |
 	a := 'a' asCypherIdentifier.
 	b := 'b' asCypherIdentifier.
 	r := 'r' asCypherIdentifier.
 	p := 'p' asCypherIdentifier.
 	nodeA := a asNode.
 	nodeB := b asNode.
-	where := (a getId = nodeAId) & (b getId = nodeBId).
-	query := self match: (nodeA, nodeB) where: where.
+	query := self match: nodeA where: a getId = nodeAId.
+	query addMatch: nodeB; addWhere: b getId = nodeBId.
 	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
 	query addCreate: pattern.
 	query addReturn: p.
@@ -122,15 +122,15 @@ CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId createIn: aBlock [
 
 { #category : #shortcuts }
 CyQuery class >> matchPathWithNodeAt: nodeAId nodeAt: nodeBId mergeIn: aBlock [ 
-	| a b r p nodeA nodeB where query pattern |
+	| a b r p nodeA nodeB query pattern |
 	a := 'a' asCypherIdentifier.
 	b := 'b' asCypherIdentifier.
 	r := 'r' asCypherIdentifier.
 	p := 'p' asCypherIdentifier.
 	nodeA := a asNode.
 	nodeB := b asNode.
-	where := (a getId = nodeAId) & (b getId = nodeBId).
-	query := self match: (nodeA, nodeB) where: where.
+	query := self match: nodeA where: a getId = nodeAId.
+	query addMatch: nodeB; addWhere: b getId = nodeBId.
 	pattern := p path: (aBlock value: nodeA value: nodeB value: r).
 	query addMerge: pattern.
 	query addReturn: p.

@@ -211,6 +211,11 @@ CyExpression >> bePlain [
 	self enclosed: false
 ]
 
+{ #category : #converting }
+CyExpression >> withoutOutermostParentheses [
+	^ self copy bePlain; yourself
+]
+
 { #category : #'shortcuts-conditions' }
 CyExpression >> concat: otherExpression [
 	^self class concat: self with: otherExpression
